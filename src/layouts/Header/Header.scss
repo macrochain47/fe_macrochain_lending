@@ -1,0 +1,40 @@
+.app-header {
+    width: 100vw;
+    position: fixed;
+    
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    
+    padding-left: 56px;
+    
+    border-bottom: 1px solid var(--hover-color);
+    
+    &--container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        height: 56px;
+        width: 80%;
+        .header-left {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            .option-link {
+                margin: 0px 16px;
+                font-size: 1rem;
+                padding: 6px 20px;
+                font-weight: 600;
+                border-radius: 20px;
+
+                &:hover {
+                    background-color: var(--hover-color);
+                }
+            }
+        }
+
+    }
+
+}

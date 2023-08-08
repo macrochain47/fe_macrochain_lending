@@ -1,0 +1,34 @@
+.app-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 56px;
+    height: 100vh;
+    z-index: 1;
+    border-right: 1px solid #ffffff19;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    &--container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .sidebar-option {
+            height: 56px;
+            width: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            span {
+                padding: 12px;
+                border-radius: 100%;
+                &:hover {
+                    background-color: #ffffff19;
+                }
+                cursor: pointer;
+            }
+        }
+    }
+}
