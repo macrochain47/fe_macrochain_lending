@@ -10,6 +10,11 @@
 
   --foreground-rgb: 10, 10, 10;
   --hover-color: #bbb;
+
+  --item-bg-color: rgb(245, 244, 246);
+
+  --sig-border-color:rgb(94, 71, 245);
+  --sig-box-shadow: rgba(27, 17, 47, 0.1) 6px 6px 20px 4px, rgba(60, 48, 84, 0.1) -6px -6px 12px, rgba(60, 48, 84, 0.05) 2px 2px 4px inset;
 }
 
 .app {
@@ -35,10 +40,16 @@
 [data-theme='dark'] {
   --foreground-rgb : 255,255,255;
   --hover-color: #ffffff19;
+  --item-bg-color: rgb(35, 32, 39);
+  
+  --sig-border-color:rgb(122, 112, 255);
+  --sig-box-shadow:  rgb(27, 17, 47) 6px 6px 20px 4px, rgb(60, 48, 84) -6px -6px 12px, rgba(60, 48, 84, 0.75) 2px 2px 4px inset;
+  
+  
+  
   .app {
     background-image: radial-gradient(circle, #312e38, #2f2b38, #2d2938, #2c2637, #2a2437);
   }
-  
 }
 
 * {

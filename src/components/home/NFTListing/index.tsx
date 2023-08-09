@@ -1,5 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
+import './NFTListing.scss'
+
 const NFTListing = () => {
   return (
     <div className='nft'>
