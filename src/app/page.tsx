@@ -3,13 +3,13 @@ import NFTListing from '@/components/NFTListing'
 
 export default function Home() {
   return (
-    <main className="main" style={{width: 'var(--main-width)'}}>
+    <div className='app-home'>
       <NFTListing />
       <NFTListing />
       <NFTListing />
       <NFTListing />
       <NFTListing />
       <NFTListing />
-    </main>
+    </div>
   )
 }

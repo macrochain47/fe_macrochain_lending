@@ -1,34 +1,35 @@
 .app-header {
-    width: 100vw;
+    width: calc(100vw - var(--sidebar-width));
     position: fixed;
-    
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    
-    padding-left: 56px;
-    
     border-bottom: 1px solid var(--hover-color);
-    
+    margin-left: var(--sidebar-width);
+
     &--container {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
         height: 56px;
-        width: 80%;
-        .header-left {
+        width: var(--main-width);
+        .logo {
+            cursor: pointer;
+        }
+        
+        .header-link {
             display: flex;
             flex-direction: row;
             align-items: center;
+
             .option-link {
                 margin: 0px 16px;
                 font-size: 1rem;
                 padding: 6px 20px;
-                font-weight: 600;
+                font-weight: 500;
                 border-radius: 20px;
-
                 &:hover {
                     background-color: var(--hover-color);
                 }

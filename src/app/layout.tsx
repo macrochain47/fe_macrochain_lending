@@ -21,14 +21,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers>
-          <Header />  
-          <Header />
-          <Sidebar />
-            <div className='app'>
-              {children}
-            </div>
-        </Providers>
+          <div className='app'>
+            <Providers>
+              <Header />  
+              <Header />
+              <Sidebar />
+              <div className='app-content'>
+                <div style={{width: 'var(--main-width)'}}>
+                  {children}
+                </div>
+              </div>
+            </Providers>
+          </div>
       </body>
     </html>
   )

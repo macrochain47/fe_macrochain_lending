@@ -1,11 +1,9 @@
 .app-sidebar {
     position: fixed;
-    left: 0;
-    top: 0;
-    width: 56px;
+    width: var(--sidebar-width);
     height: 100vh;
     z-index: 1;
-    border-right: 1px solid #ffffff19;
+    border-right: 1px solid var(--hover-color);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -15,8 +13,8 @@
         align-items: center;
 
         .sidebar-option {
-            height: 56px;
-            width: 56px;
+            height: var(--sidebar-width);
+            width: var(--sidebar-width);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -25,7 +23,7 @@
                 padding: 12px;
                 border-radius: 100%;
                 &:hover {
-                    background-color: #ffffff19;
+                    background-color: var(--hover-color);
                 }
                 cursor: pointer;
             }

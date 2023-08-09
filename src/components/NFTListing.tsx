@@ -19,6 +19,9 @@ const NFTListing = () => {
                 src="https://goerli.arcade.xyz/_next/image?url=https%3A%2F%2Fimages.arcade.xyz%2Fgoerli%2F0x3f228cbcec3ad130c45d21664f2c7f5b23130d23%2F6266&w=384&q=75" />
         </div>
         <div>
+            <p>Price</p>
+        </div>
+        <div>
             <p>Buy</p>
         </div>
     </div>
