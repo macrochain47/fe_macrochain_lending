@@ -22,10 +22,6 @@ export default function Home() {
         <NFTListing />
         <NFTListing />
       </div>
-      
-      {/* <NFTListing /> */}
-      {/* <NFTListing /> */}
-      {/* <NFTListing /> */}
     </div>
   )
 }

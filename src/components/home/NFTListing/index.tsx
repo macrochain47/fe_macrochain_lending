@@ -9,9 +9,11 @@ const NFTListing = () => {
             <p className='nft--header-id'>
                 #1293085580
             </p>
+
             <p className='nft--header-name'>
-                NFT By Klaytn
+                Starbuck NFT
             </p>
+            
         </div>
         <div>
             <Image 
