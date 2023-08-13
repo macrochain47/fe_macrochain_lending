@@ -1,0 +1,58 @@
+.app-lendingpage {
+    margin-top: 50px;
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-between;
+    // rgb(41, 46, 65)
+
+    &--left {
+        display: flex;
+        flex-direction: column;
+        flex: 0.65;
+        
+        .info-lend, .offer {
+            border-radius: 20px;
+            width: 100%;
+            background-color: var(--item-bg-color);
+            margin-bottom: 40px;
+            &--header {
+                background-color: #333;
+                padding: 20px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                .info-lend-items{
+                    display: flex;
+                    flex-direction: row;
+                    .info-lend-item {
+                        display: flex;
+                        flex-direction: column;
+                        margin: 0 16px 0px 16px;
+                    }
+                }
+            }
+
+            &--content{
+                padding: 20px;
+                display: flex;
+                flex-direction: row;
+            
+            }
+        }
+    }
+
+    &--right {
+        display: flex;
+        flex-direction: column;
+        flex: 0.3;
+        .action, .user-info {
+            padding: 20px;
+            width: 100%;
+            background-color: var(--item-bg-color);
+            margin-bottom: 40px;
+            height: 300px;
+        }   
+    }
+
+}

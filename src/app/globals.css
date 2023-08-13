@@ -12,6 +12,8 @@
   --hover-color: #bbb;
 
   --item-bg-color: rgb(245, 244, 246);
+  --text-title-color: #555;
+
 
   --sig-border-color:rgb(94, 71, 245);
   --sig-box-shadow: rgba(27, 17, 47, 0.1) 6px 6px 20px 4px, rgba(60, 48, 84, 0.1) -6px -6px 12px, rgba(60, 48, 84, 0.05) 2px 2px 4px inset;
@@ -45,10 +47,12 @@
   --sig-border-color:rgb(122, 112, 255);
   --sig-box-shadow:  rgb(27, 17, 47) 6px 6px 20px 4px, rgb(60, 48, 84) -6px -6px 12px, rgba(60, 48, 84, 0.75) 2px 2px 4px inset;
   
-  
+  /* COLOR TEXT */
+  --text-title-color: #ccc;
+
   
   .app {
-    background-image: radial-gradient(circle, #312e38, #2f2b38, #2d2938, #2c2637, #2a2437);
+    background-image: radial-gradient(circle, #1b2030, #202332, #262534, #2a2836, #2f2b38);
   }
 }
 

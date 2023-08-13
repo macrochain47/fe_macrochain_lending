@@ -37,5 +37,15 @@
         }
 
     }
+}
 
+:where(.css-dev-only-do-not-override-byeoj0).ant-btn-primary {
+    background-color: rgb(165, 163, 255);
+    color: black;
+}
+
+:where(.css-dev-only-do-not-override-byeoj0).ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover {
+    color: #fff;
+    background-color: rgb(195, 163, 255);
+    color: black;
 }

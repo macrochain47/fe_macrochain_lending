@@ -6,6 +6,7 @@ import Sidebar from '@/layouts/Siderbar'
 import { Providers } from './providers'
 
 
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -21,18 +22,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-          <div className='app'>
-            <Providers>
-              <Header />  
-              <Header />
-              <Sidebar />
-              <div className='app-content'>
-                <div style={{width: 'var(--main-width)'}}>
-                  {children}
+            <div className='app'>
+              <Providers>
+                <Header />  
+                <Header />
+                <Sidebar />
+                <div className='app-content'>
+                  <div style={{width: 'var(--main-width)'}}>
+                    {children}
+                  </div>
                 </div>
-              </div>
-            </Providers>
-          </div>
+              </Providers>
+            </div>
       </body>
     </html>
   )

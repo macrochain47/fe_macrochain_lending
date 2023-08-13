@@ -151,7 +151,7 @@ const Header = () => {
                 <Link href="/loans" className='option-link'>Loan</Link>
             </div>
 
-            <Button type='primary'>Connect Wallet</Button>
+            <Button type='primary' style={{backgroundColor: '#2F2B38 !important'}}>Connect Wallet</Button>
         </div>  
       </div>
     )

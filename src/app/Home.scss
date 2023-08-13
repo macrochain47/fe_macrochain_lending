@@ -4,15 +4,19 @@
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        margin-top: 30px;
-        margin-bottom: 30px;
+        margin: 50px 0 50px 0;
     }
 
     &--listing {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
+        // display: flex;
+        // flex-direction: row;
+        // align-items: center;
+        // justify-content: space-between;
+        // flex-wrap: wrap;
+
+        display: grid; /* 1 */
+        grid-template-columns: repeat(auto-fill, 270px); /* 2 */
+        grid-gap: 20px; /* 3 */
+        justify-content: space-between; /* 4 */
     }
 }
