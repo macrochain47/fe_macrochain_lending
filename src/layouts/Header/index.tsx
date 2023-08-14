@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useTheme } from 'next-themes'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Button } from 'antd'
+import { Button, Divider, Popover } from 'antd'
 import Web3 from 'web3';
 
 
@@ -17,6 +17,10 @@ import appApi from '@/api/appAPI';
 import jwt_decode from "jwt-decode";
 import { IUserState, saveInfo } from '@/state/user/userSlice';
 import { saveWeb3 } from '@/state/app/appSlice';
+import { useAppSelector } from '@/state/hook';
+import { MetaMaskAvatar } from 'react-metamask-avatar';
+import Dropdown from 'antd/es/dropdown/dropdown';
+import { CopyOutlined, SwapOutlined } from '@ant-design/icons';
 
 const SIGN_MESSAGE = "Verify Account";
 
@@ -131,6 +135,7 @@ const Header = () => {
   const [mounted, setMounted] = useState(false)
   const { theme } = useTheme()
   const router = useRouter()
+  const userState = useAppSelector((state) => state.userState)
 
   useEffect(() => {
     setMounted(true)
@@ -178,7 +183,54 @@ const Header = () => {
               <Link href="/loans" className='option-link'>Tokenize</Link>
           </div>
 
-          <Button type='primary' onClick={() => hdConnectWallet()}>Connect Wallet</Button>
+          {
+            !userState.isAuthenticated ?
+            <Button 
+              type='primary' 
+              onClick={() => hdConnectWallet()}
+              className='btn-connect'
+            >Connect Wallet</Button>
+            :
+            
+            <Popover placement="bottomRight" content={(
+              <div className='popover-user' >
+                <div className='popover-user-info'>
+                  <MetaMaskAvatar address={userState.address} size={36} />
+                  <p className='address'>0x622....9e171</p>
+                </div>
+                <Divider className='divider' />
+                <div className='popover-user-network'>
+                  <p>Network</p>
+                  <div>Baobab Testnet</div>
+                </div>
+                <Divider className='divider' />
+                <div className='popover-user-action'>
+                  <div>
+                    <SwapOutlined style={{marginRight: 6}}/>
+
+                    Change account
+                  </div>
+                  <div>
+                    <CopyOutlined style={{marginRight: 6}}/>
+
+                    Coppy address
+                  </div>
+                </div>
+              </div>
+            )
+            } trigger={'click'} arrow={false}>
+              <Button 
+              type='primary' 
+              className='btn-user'
+              icon={<MetaMaskAvatar address={userState.address} size={24} />}
+              size='large'
+              >
+                0x62132....e1a71
+              </Button>
+
+            </Popover>
+
+          }
         </div>  
     </div>
   )

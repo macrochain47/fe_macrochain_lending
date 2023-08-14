@@ -4,8 +4,8 @@
     flex: 1;
     flex-direction: row;
     justify-content: space-between;
-    // rgb(41, 46, 65)
 
+    
     &--left {
         display: flex;
         flex-direction: column;
@@ -14,11 +14,11 @@
         .info-lend, .offer {
             border-radius: 20px;
             width: 100%;
-            background-color: var(--item-bg-color);
+            background-color: rgb(41, 46, 65);
             margin-bottom: 40px;
 
             &--header {
-                background-color: #333;
+                background-color: #9fa6bf;
                 padding: 20px;
                 display: flex;
                 flex-direction: row;
@@ -81,7 +81,7 @@
             border-radius: 20px;
 
             &--header {
-                background-color: #333;
+                background-color: #9fa6bf;
                 padding: 20px;
                 display: flex;
                 flex-direction: row;

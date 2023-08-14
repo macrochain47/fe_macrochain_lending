@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import './LendingPage.scss'
 
@@ -109,10 +109,12 @@ const data: DataType[] = [
 
 const LendingPage = () => {
   const [percent, setPercent] = useState(0);
-  setInterval(() => {
-    percent < 60 ? setPercent((prev) => prev + 2) : clearInterval(this)
-  }, 50)
-
+  
+  useEffect(() => {
+    const myInterval = setInterval(() => {
+      setPercent((prev) => prev < 60 ? prev + 2 : prev )
+    }, 10)
+  }, [])
   return (
     <div className='app-lendingpage'>
         <div className='app-lendingpage--left'>
