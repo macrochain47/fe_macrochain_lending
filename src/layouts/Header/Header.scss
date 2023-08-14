@@ -13,7 +13,7 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        height: 56px;
+        height: var(--header-height);
         width: var(--main-width);
         .logo {
             cursor: pointer;

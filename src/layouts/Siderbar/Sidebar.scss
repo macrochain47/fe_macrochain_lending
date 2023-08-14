@@ -20,8 +20,10 @@
             justify-content: center;
 
             span {
-                padding: 12px;
+                padding: 20px;
                 border-radius: 100%;
+                font-weight: 800;
+                font-size: 1.4rem;
                 &:hover {
                     background-color: var(--hover-color);
                 }

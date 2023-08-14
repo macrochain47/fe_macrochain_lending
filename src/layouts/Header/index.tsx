@@ -13,7 +13,10 @@ import imageDark from '../../assets/img/logo-dark.png'
 import imageLight from '../../assets/img/logo-light.png'
 import "./Header.scss"
 import store from '@/state';
-
+import appApi from '@/api/appAPI';
+import jwt_decode from "jwt-decode";
+import { IUserState, saveInfo } from '@/state/user/userSlice';
+import { saveWeb3 } from '@/state/app/appSlice';
 
 const SIGN_MESSAGE = "Verify Account";
 
@@ -28,35 +31,32 @@ export const hdConnectWallet = async () => {
       try {
           await window.ethereum.request({ method: "eth_requestAccounts" });
           const address = (await myWeb3.eth.getAccounts())[0];
-      //     const signature = await signatureLogin(myWeb3, address);
-      //     const res = await appApi.login({
-      //         address: address,
-      //         signature: signature,
-      //         message: "Verify Account",
-      //     })
-      //     const token_decode : any = (jwt_decode(res?.data.accessToken))
-      //     const myUserState : IUserState = {
-      //         address:  address,
-      //         token: res?.data.accessToken,
-      //         network: Number(await myWeb3.eth.net.getId()),
-      //         wallet: [],
-      //         balance:fixStringBalance(String(
-      //             await myWeb3.eth.getBalance(address)
-      //         ), 18),
-      //         isAuthenticated: true,
-      //         signature: signature,
-      //         createdAt: res?.data.user.createdAt,
-      //         expiredTime: new Date(token_decode.exp * 1000)
-      //     }
-      //     myUserState.wallet = await getBalanceAccount(myWeb3, myUserState, storeData.appState.tokens)
-      //     if (!storeData.appState.isListening) {
-      //         window.ethereum.on("accountsChanged", () =>  hdAccountChange())
-      //         window.ethereum.on("chainChanged", () => hdNetworkChange())
-      //     }
-      //     store.dispatch(saveInfo(myUserState));
-      //     store.dispatch(saveWeb3(myWeb3));
+          const signature = await signatureLogin(myWeb3, address);
+          const res = await appApi.login({
+              address: address,
+              signature: signature,
+              message: "Verify Account",
+          })
+          const token_decode : any = (jwt_decode(res?.data.accessToken))
+          
+          const myUserState : IUserState = {
+              address:  address,
+              token: res?.data.accessToken,
+              network: Number(await myWeb3.eth.net.getId()),
+              balance: String(await myWeb3.eth.getBalance(address)),
+              isAuthenticated: true,
+              signature: signature,
+              createdAt: res?.data.user.createdAt,
+              expiredTime: new Date(token_decode.exp * 1000)
+          }
+          // if (!storeData.appState.isListening) {
+          //     window.ethereum.on("accountsChanged", () =>  hdAccountChange())
+          //     window.ethereum.on("chainChanged", () => hdNetworkChange())
+          // }
+          store.dispatch(saveInfo(myUserState));
+          store.dispatch(saveWeb3(myWeb3));
 
-      //     toast.update(toastify, { render: "Connect wallet successfully!", type: "success", isLoading: false, autoClose: 1000});
+          // toast.update(toastify, { render: "Connect wallet successfully!", type: "success", isLoading: false, autoClose: 1000});
       } catch (error) {
           // toast.update(toastify, { render: "Connect wallet failed, see detail in console.", type: "error", isLoading: false, autoClose: 1000});
           console.log(error)
@@ -175,10 +175,10 @@ const Header = () => {
           <div className='header-link'>
               <Link href="/borrows" className='option-link'>Borrow</Link>
               <Link href="/lends" className='option-link'>Lend</Link>
-              <Link href="/loans" className='option-link'>Loan</Link>
+              <Link href="/loans" className='option-link'>Tokenize</Link>
           </div>
 
-          <Button type='primary'>Connect Wallet</Button>
+          <Button type='primary' onClick={() => hdConnectWallet()}>Connect Wallet</Button>
         </div>  
     </div>
   )

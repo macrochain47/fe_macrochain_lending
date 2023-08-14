@@ -16,6 +16,7 @@
             width: 100%;
             background-color: var(--item-bg-color);
             margin-bottom: 40px;
+
             &--header {
                 background-color: #333;
                 padding: 20px;
@@ -34,10 +35,36 @@
             }
 
             &--content{
-                padding: 20px;
+                padding: 40px;
                 display: flex;
                 flex-direction: row;
-            
+                
+                .info-nft {
+                    display: flex;
+                    flex-direction: row;
+                    width: 100%;
+                    padding: 0 20px 0 20px;
+                    &--list-props {
+                        width: 100%;
+                        padding: 0 0px 0 40px;
+                        font-size: 1.2rem;
+                        .info-nft--name {
+                            font-size: 1.4rem;
+                            font-weight: 600;
+                            margin-bottom: 16px;
+                        }
+                        .info-nft--prop {
+                            margin: 4px 0;
+                            width: 100%;
+                            display: flex;
+                            justify-content: space-between;
+                        }
+                    }
+                }
+            }
+
+            .offer--table{
+                padding: 20px 40px 0 40px;
             }
         }
     }
@@ -47,11 +74,26 @@
         flex-direction: column;
         flex: 0.3;
         .action, .user-info {
-            padding: 20px;
             width: 100%;
             background-color: var(--item-bg-color);
             margin-bottom: 40px;
             height: 300px;
+            border-radius: 20px;
+
+            &--header {
+                background-color: #333;
+                padding: 20px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                
+                p {
+                    text-align: center;
+                    width: 100%;
+                    font-weight: 700;
+                    font-size: 1.1rem;
+                }
+            }
         }   
     }
 

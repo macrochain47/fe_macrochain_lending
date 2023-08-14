@@ -1,41 +1,40 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import './LendingPage.scss'
 
-import { Space, Table, Tag } from 'antd';
+import { Progress, Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { clearInterval } from 'timers';
 
 interface DataType {
   key: string;
-  name: string;
-  age: number;
-  address: string;
+  principle: number;
+  apr: number;
+  term: string;
   tags: string[];
 }
 
 const columns: ColumnsType<DataType> = [
   {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
+    title: 'Principle',
+    dataIndex: 'principle',
+    key: 'principle',
     render: (text) => <a>{text}</a>,
-        sorter: (a, b) => a.name.length - b.name.length,
+    sorter: (a, b) => a.principle - b.principle,
 
   },
   {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-        sorter: (a, b) => a.name.length - b.name.length,
-
+    title: 'APR',
+    dataIndex: 'apr',
+    key: 'apr',
+    sorter: (a, b) => a.apr - b.apr,
   },
   {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-        sorter: (a, b) => a.name.length - b.name.length,
-
+    title: 'Term',
+    dataIndex: 'term',
+    key: 'term',
+    sorter: (a, b) => a.term.length - b.term.length,
   },
   {
     title: 'Tags',
@@ -62,7 +61,7 @@ const columns: ColumnsType<DataType> = [
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-        <a>Invite {record.name}</a>
+        {/* <a>Invite {record.name}</a> */}
         <a>Delete</a>
       </Space>
     ),
@@ -72,43 +71,48 @@ const columns: ColumnsType<DataType> = [
 const data: DataType[] = [
   {
     key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
+    principle: 1500,
+    apr: 32,
+    term: '10 days',
     tags: ['nice', 'developer'],
   },
   {
     key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
+    principle: 1500,
+    apr: 42,
+    term: '10 days',
     tags: ['loser'],
   },
   {
     key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
+    principle: 2000,
+    apr: 32,
+    term: '10 days',
     tags: ['cool', 'teacher'],
   },
   {
     key: '4',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
+    principle: 2000,
+    apr: 32,
+    term: '10 days',
     tags: ['cool', 'teacher'],
   },
   {
     key: '5',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
+    principle: 2000,
+    apr: 32,
+    term: '10 days',
     tags: ['cool', 'teacher'],
   },
 ];
 
 
 const LendingPage = () => {
+  const [percent, setPercent] = useState(0);
+  setInterval(() => {
+    percent < 60 ? setPercent((prev) => prev + 2) : clearInterval(this)
+  }, 50)
+
   return (
     <div className='app-lendingpage'>
         <div className='app-lendingpage--left'>
@@ -151,52 +155,66 @@ const LendingPage = () => {
                     height={230}
                     src="https://goerli.arcade.xyz/_next/image?url=https%3A%2F%2Fimages.arcade.xyz%2Fgoerli%2F0x3f228cbcec3ad130c45d21664f2c7f5b23130d23%2F6266&w=384&q=75" 
                   />
-
-                  <p>#1293085580</p>
-                  <p>Starbuck NFT</p>
+                  <div className='info-nft--list-props'>
+                    <p className='info-nft--name'>Starbuck NFT</p>
+                    <p className='info-nft--prop'>Token ID: <span>6932</span></p>
+                    <p className='info-nft--prop'>Contract address:  <span> 0x5af0...25a5  </span> </p>
+                    <p className='info-nft--prop'>Token Standard: <span>  ERC-721 </span> </p>
+                    <p className='info-nft--prop'>Last updated:  <span> 7 month ago </span> </p>
+                  </div>
                 </div>
                 <div className='table-offer'>
-                  <Table
-                    className="table-striped-rows"
-                    onRow={(record, rowIndex) => {
-                      return {
-                        style: { backgroundColor: '#aaa'},
-                        onMouseEnter: (event) => {
-                          return {
-                            style: { backgroundColor: '#aaa'},
-                          }
-                        }, 
-                        onMouseLeave: (event) => {
-                          return {
-                            style: { backgroundColor: '#aaa'},
-                          }
-                        }, 
-                      };
-                    }}
-                    onHeaderRow={(column, index) => {
-                      return {
-                        style: { backgroundColor: 'red'}
-                      };
-                    }}
-                    columns={columns} 
-                    dataSource={data} 
-                  />
+
                 </div>
               </div>
             </div>
 
             <div className='offer'>
-
+              <div className='offer--header'>
+                <p>OPEN OFFER</p>
+              </div>
+            <div className='offer--table'>
+              <Table
+                className="table-striped-rows"
+                onRow={(record, rowIndex) => {
+                  return {
+                    style: { backgroundColor: '#aaa'},
+                    onMouseEnter: (event) => {
+                      return {
+                        style: { backgroundColor: '#aaa'},
+                      }
+                    }, 
+                    onMouseLeave: (event) => {
+                      return {
+                        style: { backgroundColor: '#aaa'},
+                      }
+                    }, 
+                  };
+                }}
+                onHeaderRow={(column, index) => {
+                  return {
+                    style: { backgroundColor: 'red'}
+                  };
+                }}
+                columns={columns} 
+                dataSource={data} 
+              />
             </div>
+          </div>
         </div>
 
         <div className='app-lendingpage--right'>
             <div className='action'>
-
+              <div className='action--header'>
+                  <p>MAKE AN OFFER</p>
+              </div>
             </div>
 
             <div className='user-info'>
-
+              <div className='user-info--header'>
+                <p>BORROWER</p>
+              </div>
+              <Progress type="circle" percent={percent} format={(percent) => `${percent} Days`} />
             </div>
         </div>
     </div>
