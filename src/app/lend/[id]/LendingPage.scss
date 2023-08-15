@@ -5,37 +5,39 @@
     flex-direction: row;
     justify-content: space-between;
 
-    
     &--left {
         display: flex;
         flex-direction: column;
         flex: 0.65;
         
         .info-lend, .offer {
-            border-radius: 20px;
-            width: 100%;
+            border-radius: 6px;
             background-color: rgb(41, 46, 65);
             margin-bottom: 40px;
-
+            padding-top: 10px;
+            border: 2px solid rgba(235, 235, 239, 0.08);
             &--header {
-                background-color: #9fa6bf;
-                padding: 20px;
+                background-color: rgb(41, 46, 65) ;
+                padding: 20px 40px;
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
-                .info-lend-items{
-                    display: flex;
-                    flex-direction: row;
-                    .info-lend-item {
-                        display: flex;
-                        flex-direction: column;
-                        margin: 0 16px 0px 16px;
+
+                p {
+                    font-weight: 700;
+                    font-size: 1.1rem;
+                }
+                .id-due{
+                    p {
+                        font-size: 1rem;
+                        font-weight: 500;
+                        color: #ccc;
                     }
                 }
             }
 
             &--content{
-                padding: 40px;
+                padding: 0px 40px 30px 40px;
                 display: flex;
                 flex-direction: row;
                 
@@ -43,11 +45,13 @@
                     display: flex;
                     flex-direction: row;
                     width: 100%;
-                    padding: 0 20px 0 20px;
                     &--list-props {
-                        width: 100%;
-                        padding: 0 0px 0 40px;
-                        font-size: 1.2rem;
+                        min-width: 400px;
+                        font-size: 1rem;
+                        margin-left: 20px;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: flex-end;
                         .info-nft--name {
                             font-size: 1.4rem;
                             font-weight: 600;
@@ -61,10 +65,25 @@
                         }
                     }
                 }
+                .info-lend-items{
+                    display: flex;
+                    flex-direction: row;
+                    align-items: flex-end;
+                    .info-lend-item {
+                        display: flex;
+                        flex-direction: column;
+                        width: 130px;
+                        padding: 20px;
+                        border: 1px solid rgba(235, 235, 239, 0.08);
+                    }
+                    .info-lend-item:first-child{
+                        margin-bottom: 10px;
+                    }
+                }
             }
 
             .offer--table{
-                padding: 20px 40px 0 40px;
+                
             }
         }
     }
@@ -73,28 +92,186 @@
         display: flex;
         flex-direction: column;
         flex: 0.3;
+
         .action, .user-info {
             width: 100%;
             background-color: var(--item-bg-color);
             margin-bottom: 40px;
-            height: 300px;
-            border-radius: 20px;
-
+            // height: 300px;
+            border-radius: 6px;
+            padding: 20px 40px;
             &--header {
-                background-color: #9fa6bf;
-                padding: 20px;
+                background-color: rgb(41, 46, 65) ;
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
-                
+                border-radius: 6px;
                 p {
-                    text-align: center;
                     width: 100%;
                     font-weight: 700;
                     font-size: 1.1rem;
                 }
             }
+            .action--content {
+                margin-top: 20px;
+            }
+            .action--content-addon{
+                color: #ccc;
+                font-weight: 500;     
+                width: 100px;     
+                text-align: left;
+                border-right: 1px solid  rgba(235, 235, 239, 0.08);
+                line-height: 30px;
+                padding-left: 10px;
+            }
+            .repayment {
+                text-align: right;
+                padding: 10px 0px
+            }
+            .button-create{
+                padding: 12px 20px;
+                background-color: rgb(56, 61, 81);
+                color: #ddd;
+                border: 1px solid rgba(235, 235, 239, 0.08)!important;
+                width: 180px;
+                margin-left: auto;
+                margin-right: auto;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 4px;
+            }
+            .button-create:hover {
+                border: 1px solid rgba(235, 235, 239, 0.3)!important;
+            }
+
+            .user-info-borrow {
+                margin-top: 30px;
+                margin-bottom: 10px;
+
+                .title {
+                    font-size: 1rem;
+                    font-weight: 600px;
+                    margin-bottom: 16px;
+                }
+                .content {
+                    display: flex;
+                    flex-direction: row;
+                    margin-bottom: 20px;
+                    align-items: center;
+                    &--progress {
+                     
+                    }
+                    .content-item {
+                        margin: 0px 20px;   
+                        &--title {
+                            color: #ccc;
+                            font-weight: 700;
+                        }
+                        &--text {
+                            font-size: 1.2rem;
+                            font-weight: 600;
+                        }
+                    }
+                    .divider {
+                        border-color: #ccc;
+                        height: 40px;
+                        margin-right: 30px;
+                    }
+                }
+                .ant-progress-text{
+                    color: white;
+                    font-weight: 700;
+                }
+            }
         }   
     }
-
 }
+
+// Overide TableCSS
+.ant-table-cell{
+    background-color: rgb(41, 46, 65) !important;
+    border-bottom: 1px solid rgba(235, 235, 239, 0.08)!important;
+    border-radius: 0 !important;
+}
+.ant-table-thead{
+    .ant-table-cell{
+        font-size: 1rem;
+        color: #ccc !important;
+        font-weight: 700 !important;
+    }
+    .ant-table-cell:first-child{
+        padding-left: 40px !important;
+    }
+    .ant-table-cell:last-child {
+        padding-right: 40px !important;
+    }
+    .ant-table-cell::before {
+        position: relative !important;
+    }
+}
+.ant-table-tbody {
+    .ant-table-cell{
+        font-size: 1rem;
+        color: #ddd !important;
+        font-weight: 600 !important;
+    }
+
+    .ant-table-cell:first-child{
+        padding-left: 40px !important;
+    }
+
+    .ant-table-cell:last-child {
+        padding-right: 40px !important;
+    }
+}
+
+
+// Overide InputCSS
+.ant-input-number, .ant-input-number-group-addon{
+    background: rgba(57, 55, 90, 0.5)!important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 6px 20px;
+}
+
+.ant-input-number-input{
+    color: white !important;
+    font-size: 1rem;
+    font-weight: 600;
+}
+.ant-input-number-group-wrapper {
+    width: 100% !important;
+}
+
+.ant-input-number-group-wrapper:first-child{
+    .ant-input-number-group-addon:first-child{
+        border-top-left-radius: 10px !important;
+    }
+    .ant-input-number-group-addon:last-child{
+        border-top-right-radius: 10px !important;
+        
+        span {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+    }
+}
+
+.ant-input-number-group-wrapper:last-child{
+    .ant-input-number-group-addon:first-child{
+        border-bottom-left-radius: 10px !important;
+    }
+    .ant-input-number-group-addon:last-child{
+        border-bottom-right-radius: 10px !important;
+
+        span {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+    }
+}
+

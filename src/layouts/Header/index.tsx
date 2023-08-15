@@ -20,7 +20,7 @@ import { saveWeb3 } from '@/state/app/appSlice';
 import { useAppSelector } from '@/state/hook';
 import { MetaMaskAvatar } from 'react-metamask-avatar';
 import Dropdown from 'antd/es/dropdown/dropdown';
-import { CopyOutlined, SwapOutlined } from '@ant-design/icons';
+import { CheckCircleTwoTone, CopyOutlined, PoweroffOutlined, SwapOutlined } from '@ant-design/icons';
 
 const SIGN_MESSAGE = "Verify Account";
 
@@ -201,20 +201,28 @@ const Header = () => {
                 <Divider className='divider' />
                 <div className='popover-user-network'>
                   <p>Network</p>
-                  <div>Baobab Testnet</div>
+                  <div> 
+                    <CheckCircleTwoTone twoToneColor="#52c41a" style={{marginRight: 10}}/>
+                    Baobab Testnet
+                  </div>
                 </div>
                 <Divider className='divider' />
                 <div className='popover-user-action'>
-                  <div>
-                    <SwapOutlined style={{marginRight: 6}}/>
+                  <div style={{display: 'flex', alignItems:'center'}}>
+                    <SwapOutlined style={{top: -2, marginRight: 10}}/>
 
                     Change account
                   </div>
-                  <div>
-                    <CopyOutlined style={{marginRight: 6}}/>
-
+                  <div style={{display: 'flex', alignItems:'center'}}>
+                    <CopyOutlined style={{top: -2, marginRight: 10}}/>
                     Coppy address
                   </div>
+
+                  <div style={{display: 'flex', alignItems:'center'}}>
+                    <PoweroffOutlined style={{top: -2, marginRight: 10}}/>
+                    Log out
+                  </div>
+
                 </div>
               </div>
             )
