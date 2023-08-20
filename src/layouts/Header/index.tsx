@@ -7,7 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Button, Divider, Popover } from 'antd'
 import Web3 from 'web3';
-
+import { toast } from 'react-toastify';
 
 import imageDark from '../../assets/img/logo-dark.png'
 import imageLight from '../../assets/img/logo-light.png'
@@ -17,13 +17,12 @@ import appApi from '@/api/appAPI';
 import jwt_decode from "jwt-decode";
 import { IUserState, saveInfo } from '@/state/user/userSlice';
 import { saveWeb3 } from '@/state/app/appSlice';
-import { useAppSelector } from '@/state/hook';
-import { MetaMaskAvatar } from 'react-metamask-avatar';
-import Dropdown from 'antd/es/dropdown/dropdown';
-import { CheckCircleTwoTone, CopyOutlined, PoweroffOutlined, SwapOutlined } from '@ant-design/icons';
+import { clearInfo } from '@/state/user/userSlice';
+import { useAppDispatch, useAppSelector } from '@/state/hook';
+import PopoverUser from './helper/PopoverUser';
+
 
 const SIGN_MESSAGE = "Verify Account";
-
 const signatureLogin = async (web3: any, userAddress: string) : Promise<string> => {
   return await web3.eth.personal.sign(SIGN_MESSAGE, userAddress, "");
 }
@@ -36,6 +35,7 @@ export const hdConnectWallet = async () => {
           await window.ethereum.request({ method: "eth_requestAccounts" });
           const address = (await myWeb3.eth.getAccounts())[0];
           const signature = await signatureLogin(myWeb3, address);
+          console.log(address, signature) 
           const res = await appApi.login({
               address: address,
               signature: signature,
@@ -131,11 +131,18 @@ export const hdConnectWallet = async () => {
 //   toast.update(toastify, { render: "Change network successful!", type: "success", isLoading: false, autoClose: 1000});
 // }
 
+export const userLogOut = () => {
+  store.dispatch(clearInfo())
+  toast.success("Log out successfully!")
+} 
+
 const Header = () => {
   const [mounted, setMounted] = useState(false)
   const { theme } = useTheme()
   const router = useRouter()
   const userState = useAppSelector((state) => state.userState)
+  const dispatch = useAppDispatch()
+
 
   useEffect(() => {
     setMounted(true)
@@ -145,22 +152,18 @@ const Header = () => {
     return (
       <div className='app-header'>
         <div className='app-header--container'>
-            
             <div className="logo" onClick={() => router.push('/')}>
               <Image src={imageLight} alt="logo" height={32} className='logo'/>
             </div>
-            
             <div className='header-link'>
                 <Link href="/borrows" className='option-link'>Borrow</Link>
                 <Link href="/lends" className='option-link'>Lend</Link>
                 <Link href="/loans" className='option-link'>Loan</Link>
             </div>
-
             <Button type='primary' style={{backgroundColor: '#2F2B38 !important'}}>Connect Wallet</Button>
         </div>  
       </div>
     )
-
   }
   return (
     <div className='app-header'>
@@ -187,57 +190,11 @@ const Header = () => {
             !userState.isAuthenticated ?
             <Button 
               type='primary' 
-              onClick={() => hdConnectWallet()}
+              onClick={hdConnectWallet}
               className='btn-connect'
             >Connect Wallet</Button>
             :
-            
-            <Popover placement="bottomRight" content={(
-              <div className='popover-user' >
-                <div className='popover-user-info'>
-                  <MetaMaskAvatar address={userState.address} size={36} />
-                  <p className='address'>0x622....9e171</p>
-                </div>
-                <Divider className='divider' />
-                <div className='popover-user-network'>
-                  <p>Network</p>
-                  <div> 
-                    <CheckCircleTwoTone twoToneColor="#52c41a" style={{marginRight: 10}}/>
-                    Baobab Testnet
-                  </div>
-                </div>
-                <Divider className='divider' />
-                <div className='popover-user-action'>
-                  <div style={{display: 'flex', alignItems:'center'}}>
-                    <SwapOutlined style={{top: -2, marginRight: 10}}/>
-
-                    Change account
-                  </div>
-                  <div style={{display: 'flex', alignItems:'center'}}>
-                    <CopyOutlined style={{top: -2, marginRight: 10}}/>
-                    Coppy address
-                  </div>
-
-                  <div style={{display: 'flex', alignItems:'center'}}>
-                    <PoweroffOutlined style={{top: -2, marginRight: 10}}/>
-                    Log out
-                  </div>
-
-                </div>
-              </div>
-            )
-            } trigger={'click'} arrow={false}>
-              <Button 
-              type='primary' 
-              className='btn-user'
-              icon={<MetaMaskAvatar address={userState.address} size={24} />}
-              size='large'
-              >
-                0x62132....e1a71
-              </Button>
-
-            </Popover>
-
+            <PopoverUser />
           }
         </div>  
     </div>

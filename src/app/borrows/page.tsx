@@ -2,7 +2,10 @@ import React from 'react'
 
 const Borrow = () => {
   return (
-    <div>Borrow</div>
+    <div className='app-borrow'>
+      <div>
+      </div>
+    </div>
   )
 }
 

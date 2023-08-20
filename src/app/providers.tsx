@@ -8,6 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 import store, {persistor} from '@/state';
 import { Provider } from "react-redux";
 import { PersistGate } from 'redux-persist/integration/react';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function Providers({ children } : {
     children: React.ReactNode
@@ -21,7 +22,10 @@ export function Providers({ children } : {
         <StyleProvider cache={cache}>
           <ThemeProvider>
             {children}
-            <ToastContainer 
+          </ThemeProvider>
+        </StyleProvider>
+      </PersistGate>
+      <ToastContainer 
               position="bottom-center"
               autoClose={5000}
               hideProgressBar={false}
@@ -33,9 +37,6 @@ export function Providers({ children } : {
               pauseOnHover
               theme="dark"
             />
-          </ThemeProvider>
-        </StyleProvider>
-      </PersistGate>
     </Provider>
   )
 }
