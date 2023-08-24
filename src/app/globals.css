@@ -19,6 +19,17 @@
   --sig-box-shadow: rgba(27, 17, 47, 0.1) 6px 6px 20px 4px, rgba(60, 48, 84, 0.1) -6px -6px 12px, rgba(60, 48, 84, 0.05) 2px 2px 4px inset;
 
   --bg-img: radial-gradient(circle, #f5f6f7, #f3f5fa, #f3f4fc, #f5f3fe, #f8f1ff);
+  --foreground-rgb : 255,255,255;
+  --hover-color: #ffffff19;
+  --item-bg-color: rgb(41, 46, 65);
+  
+  --sig-border-color:rgb(122, 112, 255);
+  --sig-box-shadow:  rgb(27, 17, 47) 6px 6px 20px 4px, rgb(60, 48, 84) -6px -6px 12px, rgba(60, 48, 84, 0.75) 2px 2px 4px inset;
+  
+  /* COLOR TEXT */
+  --text-title-color: #ccc;
+
+  --bg-img: radial-gradient(circle, #1b2030, #1b2030, #1b2030, #1b2030, #1b2030);
 }
 
 .app {
@@ -121,13 +132,19 @@ a {
 
 @media only screen and (min-width: 1680px) {
   :root {
-      --main-width: 86vw
+      --main-width: 90vw
   }
 }
 
 
 @media only screen and (min-width: 1920px) {
   :root {
-      --main-width: 85%
+      --main-width: 90%
+  }
+}
+
+@media only screen and (min-width: 2240px) {
+  :root {
+      --main-width: 90%
   }
 }

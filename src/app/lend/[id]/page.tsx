@@ -2,13 +2,14 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import './LendingPage.scss'
+import { countRepayment } from '@/services/helper'
 
 import { Button, InputNumber, Progress, Select, Space, Table, Tag, Divider} from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
 interface DataType {
   key: string;
-  principle: number;
+  principal: number;
   apr: number;
   term: string;
   tags: string[];
@@ -16,11 +17,11 @@ interface DataType {
 
 const columns: ColumnsType<DataType> = [
   {
-    title: 'Principle',
-    dataIndex: 'principle',
-    key: 'principle',
+    title: 'principal',
+    dataIndex: 'principal',
+    key: 'principal',
     render: (text) => <a>{text}</a>,
-    sorter: (a, b) => a.principle - b.principle,
+    sorter: (a, b) => a.principal - b.principal,
 
   },
   {
@@ -70,35 +71,35 @@ const columns: ColumnsType<DataType> = [
 const data: DataType[] = [
   {
     key: '1',
-    principle: 1500,
+    principal: 1500,
     apr: 32,
     term: '10 days',
     tags: ['nice', 'developer'],
   },
   {
     key: '2',
-    principle: 1500,
+    principal: 1500,
     apr: 42,
     term: '10 days',
     tags: ['loser'],
   },
   {
     key: '3',
-    principle: 2000,
+    principal: 2000,
     apr: 32,
     term: '10 days',
     tags: ['cool', 'teacher'],
   },
   {
     key: '4',
-    principle: 2000,
+    principal: 2000,
     apr: 32,
     term: '10 days',
     tags: ['cool', 'teacher'],
   },
   {
     key: '5',
-    principle: 2000,
+    principal: 2000,
     apr: 32,
     term: '10 days',
     tags: ['cool', 'teacher'],
@@ -106,8 +107,8 @@ const data: DataType[] = [
 ];
 
 interface IOffer {
-  principle: number | null,
-  principleType: string | null,
+  principal: number | null,
+  principalType: string | null,
   apr: number | null,
   duration: number | null,
   durationType: string | null,
@@ -115,10 +116,8 @@ interface IOffer {
 }
 
 const getRepayment = (offer: IOffer) => {
-  if (offer.apr && offer.principle && offer.duration) {
-    if (offer.durationType === 'day') return (Math.round(offer.principle + offer.apr*offer.principle*offer.duration/(365*100))*100)/100
-    if (offer.durationType === 'week') return Math.round((offer.principle + offer.apr*offer.principle*offer.duration/(52*100))*100)/100
-    else return Math.round((offer.principle + offer.apr*offer.principle*offer.duration/(12*100))*100)/100
+  if (offer.apr && offer.principal && offer.duration && offer.durationType) {
+    return countRepayment(offer.apr, offer.principal, offer.duration, offer.durationType)
   }
   else return null
 }
@@ -126,8 +125,8 @@ const getRepayment = (offer: IOffer) => {
 const LendingPage = () => {
   const [percent, setPercent] = useState(0);
   const [offer, setOffer] = useState<IOffer>({
-    principle: 0,
-    principleType: 'ETH',
+    principal: 0,
+    principalType: 'ETH',
     apr: 0,
     duration: 0,
     durationType: 'day',
@@ -145,7 +144,7 @@ const LendingPage = () => {
   useEffect(() => {
     setOffer({...offer, repayment: getRepayment(offer)})
     console.log('vcl')
-  }, [offer.apr, offer.principle, offer.duration, offer.durationType])
+  }, [offer.apr, offer.principal, offer.duration, offer.durationType])
 
   return (
     <div className='app-lendingpage'>
@@ -227,7 +226,7 @@ const LendingPage = () => {
                 <InputNumber
                   size='large'
                   className='ation-input-number'
-                  addonBefore={<p className='action--content-addon'>Principle</p>}
+                  addonBefore={<p className='action--content-addon'>Principal</p>}
                   addonAfter={(
                     <Select style={{width: 100, color: 'white', fontWeight: 600}} value={offer.durationType} onChange={(value : string) => setOffer({...offer, durationType: value})}>
                       <Select.Option value="day">ETH</Select.Option>
@@ -235,7 +234,7 @@ const LendingPage = () => {
                       <Select.Option value="month">KLAY</Select.Option>
                     </Select>
                   )}
-                  onChange={(value : (number | null)) => setOffer({...offer, principle: value})}
+                  onChange={(value : (number | null)) => setOffer({...offer, principal: value})}
                 />
                 <InputNumber
                   addonBefore={<p className='action--content-addon'>Apr</p>}
@@ -260,7 +259,7 @@ const LendingPage = () => {
                   className='ation-input-number'
                 />
               </div>
-              <p className='repayment'>Repayment: {offer.repayment} {offer.principleType} </p>
+              <p className='repayment'>Repayment: {offer.repayment} {offer.principalType} </p>
               <div className="button-create" onClick={() => console.log(offer)}>Create offer</div>
             </div>
 

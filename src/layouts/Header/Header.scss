@@ -28,9 +28,11 @@
             .option-link {
                 margin: 0px 16px;
                 font-size: 1rem;
-                padding: 6px 20px;
+                padding: 10px;
                 font-weight: 500;
+                min-width: 120px;
                 border-radius: 20px;
+                text-align: center;
                 &:hover {
                     background-color: var(--hover-color);
                 }

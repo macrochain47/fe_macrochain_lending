@@ -20,9 +20,9 @@ export function Providers({ children } : {
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <StyleProvider cache={cache}>
-          <ThemeProvider>
+          {/* <ThemeProvider> */}
             {children}
-          </ThemeProvider>
+          {/* </ThemeProvider> */}
         </StyleProvider>
       </PersistGate>
       <ToastContainer 

@@ -137,47 +137,65 @@ export const userLogOut = () => {
 } 
 
 const Header = () => {
-  const [mounted, setMounted] = useState(false)
   const { theme } = useTheme()
   const router = useRouter()
   const userState = useAppSelector((state) => state.userState)
-  const dispatch = useAppDispatch()
 
+  // if (!mounted) {
+  //   return (
+  //     <div className='app-header'>
+  //       <div className='app-header--container'>
+  //           <div className="logo" onClick={() => router.push('/')}>
+  //             <Image src={imageLight} alt="logo" height={32} className='logo'/>
+  //           </div>
+  //           <div className='header-link'>
+  //               <Link href="/borrows" className='option-link'>Borrow</Link>
+  //               <Link href="/lends" className='option-link'>Lend</Link>
+  //               <Link href="/loans" className='option-link'>Loan</Link>
+  //           </div>
+  //           <Button type='primary' style={{backgroundColor: '#2F2B38 !important'}}>Connect Wallet</Button>
+  //       </div>  
+  //     </div>
+  //   )
+  // }
+  // return (
+  //   <div className='app-header'>
+  //       <div className='app-header--container'>
+  //         <div className="logo" onClick={() => router.push('/')}>
+  //           {
+  //             theme == 'light' &&
+  //               <Image src={imageLight} alt="logo" height={32} className='logo'/>
+  //           }
+            
+  //           {
+  //             theme == 'dark' &&
+  //               <Image src={imageDark} alt="logo" height={32} className='logo'/>
+  //           }
+  //         </div>
+           
+  //         <div className='header-link'>
+  //             <Link href="/borrows" className='option-link'>Borrow</Link>
+  //             <Link href="/lends" className='option-link'>Lend</Link>
+  //             <Link href="/loans" className='option-link'>Tokenize</Link>
+  //         </div>
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) {
+  //         {
+  //           !userState.isAuthenticated ?
+  //           <Button 
+  //             type='primary' 
+  //             onClick={hdConnectWallet}
+  //             className='btn-connect'
+  //           >Connect Wallet</Button>
+  //           :
+  //           <PopoverUser />
+  //         }
+  //       </div>  
+  //   </div>
     return (
-      <div className='app-header'>
-        <div className='app-header--container'>
-            <div className="logo" onClick={() => router.push('/')}>
-              <Image src={imageLight} alt="logo" height={32} className='logo'/>
-            </div>
-            <div className='header-link'>
-                <Link href="/borrows" className='option-link'>Borrow</Link>
-                <Link href="/lends" className='option-link'>Lend</Link>
-                <Link href="/loans" className='option-link'>Loan</Link>
-            </div>
-            <Button type='primary' style={{backgroundColor: '#2F2B38 !important'}}>Connect Wallet</Button>
-        </div>  
-      </div>
-    )
-  }
-  return (
     <div className='app-header'>
         <div className='app-header--container'>
           <div className="logo" onClick={() => router.push('/')}>
-            {
-              theme == 'light' &&
-                <Image src={imageLight} alt="logo" height={32} className='logo'/>
-            }
-            
-            {
-              theme == 'dark' &&
                 <Image src={imageDark} alt="logo" height={32} className='logo'/>
-            }
           </div>
            
           <div className='header-link'>
