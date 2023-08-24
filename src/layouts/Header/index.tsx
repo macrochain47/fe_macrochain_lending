@@ -132,8 +132,10 @@ export const hdConnectWallet = async () => {
 // }
 
 export const userLogOut = () => {
-  store.dispatch(clearInfo())
-  toast.success("Log out successfully!")
+  if (store.getState().userState.isAuthenticated) {
+    store.dispatch(clearInfo())
+    toast.success("Log out successfully!")
+  }
 } 
 
 const Header = () => {

@@ -39,7 +39,7 @@ const Borrow = () => {
   }, [term])
 
   const handleClickSelectNFT = () => {
-    setNft(1)
+    setNft(true)
   }
 
 
@@ -70,7 +70,7 @@ const Borrow = () => {
                 <p>Collateral</p>
               </div>
               {
-                nft &&
+                nft != null &&
                 <>  
                   <div className='collateral'>
                     <img src="https://themegamaxi.com/wp-content/uploads/2022/10/2-1-1-300x300.jpeg" 
@@ -95,10 +95,6 @@ const Borrow = () => {
                   </div>
                 </>
               }
-
-
-
-
               <div className='action--header'>
                   <p>Set term</p>
               </div>

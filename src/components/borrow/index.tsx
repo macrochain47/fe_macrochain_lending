@@ -2,7 +2,6 @@
 'use client'
 import React from 'react'
 import './NFTAsset.scss'
-import { CheckOutlined } from '@ant-design/icons'
 
 const NFTAsset = () => {
     return (

@@ -1,7 +1,7 @@
 .nft {
     background-color: var(--item-bg-color);
     position: relative;
-    padding: 16px;
+    padding: 18px;
     border-radius: 5px;
     cursor: pointer;
 
@@ -12,6 +12,7 @@
     .nft-image {
         width: 100%;
         margin-top: 10px;
+        border-radius: 5px;
     }
     &--loans-info{
         display: flex;

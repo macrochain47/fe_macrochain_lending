@@ -161,11 +161,11 @@ const LendingPage = () => {
 
               <div className='info-lend--content'>
                 <div className='info-nft'>
-                  <Image 
+                  <img 
                     alt="NFT" 
                     width={200}
                     height={200}
-                    src="https://goerli.arcade.xyz/_next/image?url=https%3A%2F%2Fimages.arcade.xyz%2Fgoerli%2F0x3f228cbcec3ad130c45d21664f2c7f5b23130d23%2F6266&w=384&q=75" 
+                    src="https://i.seadn.io/gcs/files/9e841b77bd66373b9699ecad6e962d61.png?w=500&auto=format" 
                   />
                   <div className='info-nft--list-props'>
                     <p className='info-nft--name'>Starbuck NFT</p>

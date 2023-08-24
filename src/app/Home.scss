@@ -36,28 +36,33 @@
         }
     }
 }
-@media only screen and (max-width: 1260px) {
+@media only screen and (max-width: 1400px) {
     .app-home {
         &--listing {
             grid-template-columns: repeat(auto-fill, calc(100% / 4 - 20px)); /* 2 */
         }
     }
 }
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1200px) {
     .app-home {
         &--listing {
             grid-template-columns: repeat(auto-fill, calc(100% / 3 - 20px)); /* 2 */
         }
     }
 }
-
-
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 860px) {
     .app-home {
         &--listing {
             grid-template-columns: repeat(auto-fill, calc(100% / 2 - 20px)); /* 2 */
         }
     }
+}
 
+@media only screen and (max-width: 480px) {
+    .app-home {
+        &--listing {
+            grid-template-columns: repeat(auto-fill, calc(100% / 1 - 20px)); /* 2 */
+        }
+    }
 }
 

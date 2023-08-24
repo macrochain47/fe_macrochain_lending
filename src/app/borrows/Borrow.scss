@@ -12,7 +12,7 @@
         justify-content: space-between;
     }
 
-    .app-borrow-nfts {
+    .app-borrow-nfts{
         display: grid;
         justify-content: space-between;
         grid-template-columns: repeat(auto-fill, calc(100% / 5 - 20px)); /* 2 */
@@ -162,41 +162,35 @@
         }
     
     }
-    
-
-
-
-
 }
 
-
 @media screen and (max-width: 2240px) {
-    .app-borrow-nfts {
+    .app-borrow .app-borrow-nfts{
         grid-template-columns: repeat(auto-fill, calc(100% / 5 - 20px)); /* 2 */
     }
 }
 @media screen and (max-width: 1920px) {
-    .app-borrow-nfts {
+    .app-borrow .app-borrow-nfts{
         grid-template-columns: repeat(auto-fill, calc(100% / 4 - 20px)); /* 2 */
     }
 }
 @media screen and (max-width: 1680px) {
-    .app-borrow-nfts {
+    .app-borrow .app-borrow-nfts{
         grid-template-columns: repeat(auto-fill, calc(100% / 3 - 20px)); /* 2 */
     }
 }
 @media screen and (max-width: 1260px) {
-    .app-borrow-nfts {
+    .app-borrow .app-borrow-nfts{
         grid-template-columns: repeat(auto-fill, calc(100% / 2 - 20px)); /* 2 */
     }
 }
 @media screen and (max-width: 768px) {
-    .app-borrow-nfts {
+    .app-borrow .app-borrow-nfts{
         grid-template-columns: repeat(auto-fill, calc(100% / 1 - 20px)); /* 2 */
     }
 }
 @media screen and (max-width: 480px) {
-    .app-borrow-nfts {
+    .app-borrow .app-borrow-nfts{
         grid-template-columns: repeat(auto-fill, calc(100% / 1 - 20px)); /* 2 */
     }
 }

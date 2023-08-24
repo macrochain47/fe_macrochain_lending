@@ -20,12 +20,9 @@ const LoanListing = () => {
             <img 
                 alt="NFT" 
                 className='nft-image'
-                src="https://goerli.arcade.xyz/_next/image?url=https%3A%2F%2Fimages.arcade.xyz%2Fgoerli%2F0x3f228cbcec3ad130c45d21664f2c7f5b23130d23%2F6266&w=384&q=75" 
+                src="https://i.seadn.io/gcs/files/9e841b77bd66373b9699ecad6e962d61.png?w=500&auto=format" 
             />
-            <p className='nft--principal'>
-                <span className='nft-info-title'>Principal: </span> 
-                0.8 ETH
-            </p>
+
             <div className='nft--loans-info'>
                 <div className='loan-apr'>
                     <p className='nft-info-title'>APR </p>
@@ -35,8 +32,12 @@ const LoanListing = () => {
                     <p className='nft-info-title'>Term</p>
                     <p>10 days</p>
                 </div>
+                <div className='loan-term'>
+                    <p className='nft-info-title'>Principal</p>
+                    <p>100 USD</p>
+                </div>
+                
             </div>
-
         </Link>
     )
 }
