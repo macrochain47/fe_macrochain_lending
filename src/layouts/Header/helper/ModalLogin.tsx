@@ -1,8 +1,9 @@
+import { Modal } from 'antd'
 import React from 'react'
 
 const ModalLogin = () => {
   return (
-    <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+    <Modal title="Basic Modal" open={true} >
         <p>Some contents...</p>
         <p>Some contents...</p>
         <p>Some contents...</p>

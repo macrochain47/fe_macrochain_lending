@@ -17,18 +17,18 @@
 
   --sig-border-color:rgb(94, 71, 245);
   --sig-box-shadow: rgba(27, 17, 47, 0.1) 6px 6px 20px 4px, rgba(60, 48, 84, 0.1) -6px -6px 12px, rgba(60, 48, 84, 0.05) 2px 2px 4px inset;
+
+  --bg-img: radial-gradient(circle, #f5f6f7, #f3f5fa, #f3f4fc, #f5f3fe, #f8f1ff);
 }
 
 .app {
-  height: fit-content;
   z-index: -1;
-  width: 100%;
-  background-image: radial-gradient(circle, #f5f6f7, #f3f5fa, #f3f4fc, #f5f3fe, #f8f1ff);
-  position: fixed;
+  height: fit-content;
+  background-image: var(--bg-img);
   content: "";
   width: 100%;
-  height: 100%;
   display: flex;
+  min-height: 100vh;
 }
 
 .app-content {
@@ -50,10 +50,7 @@
   /* COLOR TEXT */
   --text-title-color: #ccc;
 
-  
-  .app {
-    background-image: radial-gradient(circle, #1b2030, #1b2030, #1b2030, #1b2030, #1b2030);
-  }
+  --bg-img: radial-gradient(circle, #1b2030, #1b2030, #1b2030, #1b2030, #1b2030);
 }
 
 * {

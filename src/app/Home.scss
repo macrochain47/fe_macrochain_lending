@@ -8,15 +8,56 @@
     }
 
     &--listing {
-        // display: flex;
-        // flex-direction: row;
-        // align-items: center;
-        // justify-content: space-between;
-        // flex-wrap: wrap;
-
-        display: grid; /* 1 */
+        display: grid; 
         grid-template-columns: repeat(auto-fill, 270px); /* 2 */
         grid-gap: 20px; /* 3 */
         justify-content: space-between; /* 4 */
     }
 }
+@media only screen and (max-width: 2200px) {
+    .app-home {
+        &--listing {
+            grid-template-columns: repeat(auto-fill, calc(100% / 7 - 20px)); /* 2 */
+        }
+    }
+}
+
+@media only screen and (max-width: 1920px) {
+    .app-home {
+        &--listing {
+            grid-template-columns: repeat(auto-fill, calc(100% / 6 - 20px)); /* 2 */
+        }
+    }
+}
+@media only screen and (max-width: 1680px) {
+    .app-home {
+        &--listing {
+            grid-template-columns: repeat(auto-fill, calc(100% / 5 - 20px)); /* 2 */
+        }
+    }
+}
+@media only screen and (max-width: 1260px) {
+    .app-home {
+        &--listing {
+            grid-template-columns: repeat(auto-fill, calc(100% / 4 - 20px)); /* 2 */
+        }
+    }
+}
+@media only screen and (max-width: 768px) {
+    .app-home {
+        &--listing {
+            grid-template-columns: repeat(auto-fill, calc(100% / 3 - 20px)); /* 2 */
+        }
+    }
+}
+
+
+@media only screen and (max-width: 480px) {
+    .app-home {
+        &--listing {
+            grid-template-columns: repeat(auto-fill, calc(100% / 2 - 20px)); /* 2 */
+        }
+    }
+
+}
+
