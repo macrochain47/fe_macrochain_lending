@@ -40,12 +40,18 @@
         }
 
         .btn-connect {
-            background-color: rgb(165, 163, 255);
-            color: black;
+            background-color: #ec7f4e;
+            color: white;
+            font-weight: 600;
             .btn-user:hover {
                 background-color:  rgba(165, 163, 255, 0.3) !important;
             }
+
         }
+        .btn-connect:hover {
+            background-color:  rgba(165, 163, 255, 0.3) !important;
+        }
+
 
         .btn-user {
             background-color: rgba(255,255,255,0.05);

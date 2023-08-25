@@ -9,7 +9,7 @@ import { Button, Divider, Popover } from 'antd'
 import Web3 from 'web3';
 import { toast } from 'react-toastify';
 
-import imageDark from '../../assets/img/logo-dark.png'
+import imageDark from '@/../public/assets/logo.svg'
 import imageLight from '../../assets/img/logo-light.png'
 import "./Header.scss"
 import store from '@/state';

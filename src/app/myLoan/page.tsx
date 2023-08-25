@@ -1,8 +1,13 @@
 import React from 'react'
+import './MyLoan.scss'
+
 
 const myLoan = () => {
   return (
-    <div>myLoan</div>
+    <div className='app-myloan'>
+      <p className='app-myloan--header'>Your Loan</p>
+
+    </div>
   )
 }
 

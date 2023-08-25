@@ -269,7 +269,7 @@ const LendingPage = () => {
               </div>
                     
               <div className='user-info-borrow'>
-                <p className='title'>Borrow info</p>
+                <p className='title'>Borrow statistics</p>
                 <div className='content'>
                   <Progress size={80} type="circle" 
                     strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }}
@@ -288,7 +288,7 @@ const LendingPage = () => {
               </div>
 
               <div className='user-info-borrow'>
-                <p className='title'>Lend info</p>
+                <p className='title'>Lend statistics</p>
                 <div className='content'>
                   <Progress size={80} type="circle" 
                     strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }}

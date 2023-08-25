@@ -19,10 +19,10 @@ const Sidebar = () => {
                     <CreditCardOutlined rev={""} onClick={() => router.push('myInfo')}/>
                 </div>            
                 <div className='sidebar-option'>
-                    <StarOutlined rev={""}/>
+                    <InboxOutlined rev={""} onClick={() => router.push('myLoan')}/>
                 </div>
                 <div className='sidebar-option'>
-                    <InboxOutlined rev={""} onClick={() => router.push('myLoan')}/>
+                    <StarOutlined rev={""}/>
                 </div>
                 <div className='sidebar-option'>
                     <PoweroffOutlined rev={""} onClick={() => userLogOut()}/>
