@@ -16,10 +16,10 @@ const Sidebar = () => {
                     <UserOutlined rev={""} />
                 </div>
                 <div className='sidebar-option'>
-                    <CreditCardOutlined rev={""} onClick={() => router.push('myInfo')}/>
+                    <CreditCardOutlined rev={""} onClick={() => router.push('/myInfo')}/>
                 </div>            
                 <div className='sidebar-option'>
-                    <InboxOutlined rev={""} onClick={() => router.push('myLoan')}/>
+                    <InboxOutlined rev={""} onClick={() => router.push('/myLoan')}/>
                 </div>
                 <div className='sidebar-option'>
                     <StarOutlined rev={""}/>

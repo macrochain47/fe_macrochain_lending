@@ -7,15 +7,33 @@
         margin-bottom: 10px;
     }
 
+
     .segment-item {
         min-width: 300px;
         padding: 10px 0;
         display: flex;
 
         .name {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 600;
             margin-left: 10px;
         }
+
+        .avatar {
+            border: 1px solid black;
+        }
+    }
+
+    &--list {
+        margin-top: 40px;
+    }
+
+    // Overide CSS
+    .ant-segmented-group {
+        background-color: #aaa;
+    }
+    .ant-segmented-item-selected {
+        color: black;
+        font-weight: 900;
     }
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import './MyLoan.scss'
 import { Avatar, Segmented } from 'antd'
-import { UserOutlined } from '@ant-design/icons'
+import LoanItem from '@/components/LoanItem'
 
 
 const myLoan = () => {
@@ -14,7 +14,7 @@ const myLoan = () => {
           {
             label: (
               <div className='segment-item'>
-                <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel" />
+                <Avatar src="./assets/images/lend.png" className='avatar'/>
                 <div className='name'>Borrow</div>
               </div>
             ),
@@ -23,7 +23,7 @@ const myLoan = () => {
           {
             label: (
               <div className='segment-item'>
-                <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
+                <Avatar src="./assets/images/borrow.png" className='avatar'/>
                 <div className='name'>Lend</div>
               </div>
             ),
@@ -31,6 +31,13 @@ const myLoan = () => {
           },
         ]}
       />
+
+      <div className='app-myloan--list'>
+        <LoanItem />
+        <LoanItem />
+        <LoanItem />
+        <LoanItem />
+      </div>
     </div>
   )
 }
