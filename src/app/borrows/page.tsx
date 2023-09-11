@@ -1,13 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 import React, { useEffect, useState } from 'react'
+import { getNFTBaseContract } from '@/services/blockchain'
 import { InputNumber, Select } from 'antd'
-import Image from 'next/image'
 import { InfoCircleOutlined } from '@ant-design/icons'
 
 import './Borrow.scss'
 import { countRepayment } from '@/services/helper'
 import NFTAsset from '@/components/borrow'
+import { useAppSelector } from '@/state/hook'
+import { NFTBaseCT } from '@/constants/addressContract'
+import Web3 from 'web3'
 interface ITermProps {
   principal: number | null;
   principalType: string;
@@ -19,6 +22,9 @@ interface ITermProps {
 }
 
 const Borrow = () => {
+  const { userState, appState } = useAppSelector(state => state)
+  const myWeb3 = new Web3(window.ethereum);
+
   const [term, setTerm] = useState<ITermProps>({
     principal: 0,
     principalType: 'ETH',
@@ -40,6 +46,43 @@ const Borrow = () => {
 
   const handleClickSelectNFT = () => {
     setNft(true)
+  }
+
+  const clickLendNFT = async () => {
+    console.log('vcl')
+    if (!userState.isAuthenticated) {
+      alert("Connect wallet before faucet token");
+      return;
+    }
+
+    const NFTBaseContract = getNFTBaseContract(appState.web3, NFTBaseCT)
+
+    const dataSign = [
+      {
+        type: "address",
+        value: NFTBaseCT,
+      },
+      {
+        type: "address",
+        value: userState.address,
+      }
+    ]
+    const message = appState.web3.utils.soliditySha3(...dataSign)
+    console.log(message)
+    const signature = await myWeb3.eth.personal.sign(message, userState.address, '')
+    console.log(signature)
+    
+    const tokenizeMethod = NFTBaseContract.methods.tokenize(
+      term.principal,
+      signature
+    )
+
+    try {
+      await tokenizeMethod.estimatesGas({from: userState.address})
+      const tokenizeRecipt = await tokenizeMethod.send({from: userState.address})
+    } catch (error) {
+      console.log(error)
+    }
   }
 
 
@@ -137,7 +180,7 @@ const Borrow = () => {
                 />
               </div>
               <p className='repayment'>Repayment: {term.repayment} {term.principalType} </p>
-              <div className="button-create" onClick={() => console.log(term)}>Borrow</div>
+              <div className="button-create" onClick={clickLendNFT}>Borrow</div>
             </div>
           </div>
         }

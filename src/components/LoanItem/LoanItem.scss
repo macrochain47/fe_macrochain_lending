@@ -1,10 +1,11 @@
-.app-loanitem {
+ .app-loanitem {
     background-color: rgb(41, 46, 65);
     border: 1px solid #aaa;
     margin-bottom: 25px;
     padding: 20px;
     border-radius: 8px;
     display: flex;
+    width: fit-content;
 
     // justify-content: space-between;
     .loan-id {
@@ -14,19 +15,18 @@
         margin-bottom: 10px;
     }
     &--image {
-        width: 200px;
-        height: 200px;
+        width: 240px;
+        height: 240px;
         border-radius: 6px;
     }
 
     .loan-nft-info {
-        margin-top: auto;
         margin-left: 20px;
-        width: 360px;
+        width: 320px;
         .name-nft {
             font-size: 1.4rem;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         .info-item {
             font-size: 1rem;
@@ -51,7 +51,8 @@
     .loan-term {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 20px;
+        gap: 12px;
+        margin-top: 20px;
 
         .term-item {
             border: 1px solid #ccc;
@@ -61,12 +62,13 @@
             &--title {
                 font-size: 1rem;
                 font-weight: 600;
-                margin-bottom: 20px;
+                margin-bottom: 14px;
             }
 
             &--value {
-                font-size: 1.4rem;
+                font-size: 1.2rem;
                 font-weight: 700;
+                text-align: right;
             }
 
         }
@@ -74,8 +76,27 @@
 
     .loan-action {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         justify-content: space-evenly;
+
+        .btn-action:last-child {
+            margin-left: 20px;
+        }
     }
 
+    .loan-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .time-info .content--progress {
+            margin-left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 10px;
+        }
+
+        .content-item {
+            text-align: center;
+        }
+    }
 }

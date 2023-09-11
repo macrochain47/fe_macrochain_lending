@@ -23,7 +23,6 @@ const StatisticItem = (props: IStatisticItem) => {
           props.note && <span> ({props.note})</span>          
         }
       </p>
-      
       <Statistic value={props.value} formatter={formatter} 
         style={{fontSize: 24}} valueStyle={{fontWeight: 900}}
       />

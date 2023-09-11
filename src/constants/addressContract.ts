@@ -1,0 +1,2 @@
+export const NFTBaseCT = '0xFDf9886870815bdd90fFb9747c38748c0d89809D'
+

@@ -5,9 +5,6 @@ export const shortenString = (str: string, headCount: number, tailCount: number)
     return str.substring(0, headCount) + "..." + str.substring(str.length - tailCount);
 }
 
-
-
-
 /**
  * Get info about loan {repayment, interest}
  * @param principal 

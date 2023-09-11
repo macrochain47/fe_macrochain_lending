@@ -23,7 +23,7 @@ import PopoverUser from './helper/PopoverUser';
 
 
 const SIGN_MESSAGE = "Verify Account";
-const signatureLogin = async (web3: any, userAddress: string) : Promise<string> => {
+export const signatureLogin = async (web3: any, userAddress: string) : Promise<string> => {
   return await web3.eth.personal.sign(SIGN_MESSAGE, userAddress, "");
 }
 
