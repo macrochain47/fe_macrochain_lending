@@ -2,6 +2,7 @@
 import NFTListing from '@/components/home/NFTListing'
 import StatisticItem from '@/components/home/StatisticItem'
 import './Home.scss'
+import Lends from './lends/page'
 export default function Home() {
   return (
     <div className='app-home'>
@@ -11,21 +12,7 @@ export default function Home() {
           <StatisticItem title='Loans borrowed' note="" value={500} />
           <StatisticItem title='Total Volume' note="" value={100} />
       </div>
-      <div className='app-home--listing'>
-        <NFTListing />
-        <NFTListing />
-        <NFTListing />
-        <NFTListing />
-        <NFTListing />
-        <NFTListing />
-
-        <NFTListing />
-        <NFTListing />
-        <NFTListing />
-        <NFTListing />
-        <NFTListing />
-        <NFTListing />
-      </div>
+      <Lends />
     </div>
   )
 }

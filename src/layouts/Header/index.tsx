@@ -9,7 +9,7 @@ import { Button, Divider, Popover } from 'antd'
 import Web3 from 'web3';
 import { toast } from 'react-toastify';
 
-import imageDark from '../../assets/img/logo-dark.png'
+import imageDark from '@/../public/assets/logo.svg'
 import imageLight from '../../assets/img/logo-light.png'
 import "./Header.scss"
 import store from '@/state';
@@ -23,7 +23,7 @@ import PopoverUser from './helper/PopoverUser';
 
 
 const SIGN_MESSAGE = "Verify Account";
-const signatureLogin = async (web3: any, userAddress: string) : Promise<string> => {
+export const signatureLogin = async (web3: any, userAddress: string) : Promise<string> => {
   return await web3.eth.personal.sign(SIGN_MESSAGE, userAddress, "");
 }
 
@@ -31,6 +31,7 @@ export const hdConnectWallet = async () => {
   let storeData = store.getState();
   if (typeof window.ethereum !== "undefined") {
       const myWeb3 = new Web3(window.ethereum);
+      const toastify = toast.loading("Connecting to wallet ..., sign message to confirm!")
       try {
           await window.ethereum.request({ method: "eth_requestAccounts" });
           const address = (await myWeb3.eth.getAccounts())[0];
@@ -60,7 +61,7 @@ export const hdConnectWallet = async () => {
           store.dispatch(saveInfo(myUserState));
           store.dispatch(saveWeb3(myWeb3));
 
-          // toast.update(toastify, { render: "Connect wallet successfully!", type: "success", isLoading: false, autoClose: 1000});
+          toast.update(toastify, { render: "Connect wallet successfully!", type: "success", isLoading: false, autoClose: 1000});
       } catch (error) {
           // toast.update(toastify, { render: "Connect wallet failed, see detail in console.", type: "error", isLoading: false, autoClose: 1000});
           console.log(error)
@@ -132,8 +133,10 @@ export const hdConnectWallet = async () => {
 // }
 
 export const userLogOut = () => {
-  store.dispatch(clearInfo())
-  toast.success("Log out successfully!")
+  if (store.getState().userState.isAuthenticated) {
+    store.dispatch(clearInfo())
+    toast.success("Log out successfully!")
+  }
 } 
 
 const Header = () => {
@@ -201,7 +204,7 @@ const Header = () => {
           <div className='header-link'>
               <Link href="/borrows" className='option-link'>Borrow</Link>
               <Link href="/lends" className='option-link'>Lend</Link>
-              <Link href="/loans" className='option-link'>Tokenize</Link>
+              <Link href="/tokenize" className='option-link'>Tokenize</Link>
           </div>
 
           {

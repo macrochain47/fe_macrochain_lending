@@ -1,0 +1,21 @@
+.token-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 16px;
+    border: 1px solid #ec7f4e;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    margin-bottom: 14px;
+    border-radius: 6px;
+
+    .token-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+    }
+    
+    .token-balance {
+        margin-left: auto;
+        font-weight: 700;
+    }
+}

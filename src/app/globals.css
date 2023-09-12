@@ -132,19 +132,24 @@ a {
 
 @media only screen and (min-width: 1680px) {
   :root {
-      --main-width: 90vw
+      --main-width: 86vw
   }
 }
 
 
 @media only screen and (min-width: 1920px) {
   :root {
-      --main-width: 90%
+      --main-width: 85%
   }
 }
 
 @media only screen and (min-width: 2240px) {
   :root {
-      --main-width: 90%
+      --main-width: 80%
   }
+}
+
+.ant-progress-text {
+  color: white !important;
+  font-weight: 700;
 }

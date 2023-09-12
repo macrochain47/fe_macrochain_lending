@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/cssinjs": "^1.16.2",
     "@ant-design/icons": "^5.2.5",
     "@ant-design/pro-components": "^2.6.12",
     "@emotion/react": "^11.11.1",
@@ -20,7 +21,6 @@
     "antd": "^5.8.3",
     "axios": "^1.4.0",
     "eslint": "8.45.0",
-    "eslint-config-next": "13.4.12",
     "framer-motion": "^10.16.1",
     "jwt-decode": "^3.1.2",
     "next": "13.4.12",
@@ -35,6 +35,13 @@
     "redux-persist": "^6.0.0",
     "sass": "^1.64.1",
     "typescript": "5.1.6",
+    "uuid": "^9.0.0",
     "web3": "^4.0.3"
+  },
+  "optionalDependencies": {
+    "utf-8-validate": "^6.0.3"
+  },
+  "devDependencies": {
+    "@types/uuid": "^9.0.3"
   }
 }
