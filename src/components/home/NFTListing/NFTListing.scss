@@ -1,18 +1,16 @@
 .nft {
     background-color: var(--item-bg-color);
     position: relative;
-    padding: 18px;
+    padding: 20px;
     border-radius: 5px;
     cursor: pointer;
     border: 1px solid #777;
-    .nft---id {
-        color: var(--text-title-color);
-        font-size: 1rem;
-    }
+
     .nft-image {
         width: 100%;
         margin-top: 10px;
         border-radius: 5px;
+        height: 200px;
     }
     &--loans-info{
         display: flex;
@@ -24,13 +22,31 @@
     .nft--principal{
         margin-top: 6px;
     }
-
+    .nft-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .nft-id {
+            color: var(--text-txitle-color);
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        .nft-name {
+            font-weight: 600;
+        }
+    }
 }
 
 .nft-info-title {
     color: var(--text-title-color);
     font-size: 0.9rem;
     font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.loan-info-content {
+    font-size: 1.1rem;
+    font-weight: 500;
 }
 
 

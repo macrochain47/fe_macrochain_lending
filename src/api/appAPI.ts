@@ -35,6 +35,31 @@ class AppAPI {
         const url = this.MYAPI.concat("/loan/create");
         return axiosClient.post(url, data);
     }
+
+    getAllLoan = () => {
+        const url = this.MYAPI.concat("/loan/all");
+        return axios.get(url);
+    }
+
+    getLoan = (id: string) => {
+        const url = this.MYAPI.concat(`/loan/${id}`);
+        return axiosClient.get(url);
+    }
+
+    acceptLoan = (data:any) => {
+        const url = this.MYAPI.concat(`/loan/start`);
+        return axiosClient.post(url, data);
+    }
+
+    getMyLend = () => {
+        const url = this.MYAPI.concat("/loan/myLend");
+        return axiosClient.get(url);
+    }
+
+    getMyBorrow = () => {
+        const url = this.MYAPI.concat("/loan/myBorrow");
+        return axiosClient.get(url);
+    }
 }
 
 const appApi = new AppAPI(process.env.REACT_APP_API_CORE_ENDPOINT);

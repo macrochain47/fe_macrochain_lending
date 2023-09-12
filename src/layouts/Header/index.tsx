@@ -31,6 +31,7 @@ export const hdConnectWallet = async () => {
   let storeData = store.getState();
   if (typeof window.ethereum !== "undefined") {
       const myWeb3 = new Web3(window.ethereum);
+      const toastify = toast.loading("Connecting to wallet ..., sign message to confirm!")
       try {
           await window.ethereum.request({ method: "eth_requestAccounts" });
           const address = (await myWeb3.eth.getAccounts())[0];
@@ -60,7 +61,7 @@ export const hdConnectWallet = async () => {
           store.dispatch(saveInfo(myUserState));
           store.dispatch(saveWeb3(myWeb3));
 
-          // toast.update(toastify, { render: "Connect wallet successfully!", type: "success", isLoading: false, autoClose: 1000});
+          toast.update(toastify, { render: "Connect wallet successfully!", type: "success", isLoading: false, autoClose: 1000});
       } catch (error) {
           // toast.update(toastify, { render: "Connect wallet failed, see detail in console.", type: "error", isLoading: false, autoClose: 1000});
           console.log(error)

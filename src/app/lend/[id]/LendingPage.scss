@@ -4,11 +4,11 @@
     flex: 1;
     flex-direction: row;
     justify-content: space-between;
-
+    width: 100%;
     &--left {
         display: flex;
         flex-direction: column;
-        flex: 0.65;
+        flex: 0.5;
         
         .info-lend, .offer {
             border-radius: 6px;
@@ -37,7 +37,7 @@
             }
 
             &--content{
-                padding: 0px 40px 30px 40px;
+                padding: 0px 10px 30px 40px;
                 display: flex;
                 flex-direction: row;
                 
@@ -46,7 +46,7 @@
                     flex-direction: row;
                     width: 100%;
                     &--list-props {
-                        min-width: 350px;
+                        min-width: 300px;
                         font-size: 1rem;
                         margin-left: 20px;
                         display: flex;
@@ -72,7 +72,7 @@
                     .info-lend-item {
                         display: flex;
                         flex-direction: column;
-                        width: 130px;
+                        width: 160px;
                         padding: 20px;
                         border: 1px solid rgba(235, 235, 239, 0.08);
                     }
@@ -80,10 +80,10 @@
                         margin-bottom: 10px;
                     }
                 }
+                
             }
 
             .offer--table{
-                
             }
         }
     }
@@ -91,7 +91,8 @@
     &--right {
         display: flex;
         flex-direction: column;
-        flex: 0.3;
+        flex: 0.4;
+        min-width: 460px;
 
         .action, .user-info {
             width: 100%;
@@ -273,4 +274,21 @@
             font-weight: 600;
         }
     }
+}
+
+.button-create{
+    padding: 12px 20px;
+    background-color: rgb(56, 61, 81);
+    color: #ddd;
+    border: 1px solid rgba(235, 235, 239, 0.08)!important;
+    width: 220px;
+    height: 60px;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
 }

@@ -79,9 +79,12 @@ axiosClient.interceptors.response.use(
         console.log(error.message);
       }
     } else if (error.request) {
-      window.location.replace("/404");
+      // window.location.replace("/404");
+      console.log(error)
     } else {
-      window.location.replace("/404");
+      // window.location.replace("/404");
+      console.log(error)
+
     }
     throw error;
   }

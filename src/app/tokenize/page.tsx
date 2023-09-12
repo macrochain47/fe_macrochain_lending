@@ -69,7 +69,7 @@ const Tokenize = () => {
             await appApi.addNFT({
                 tokenID: parseInt(tokenizeRecipt.logs[1].data),
                 tokenName: infoNFT.name,
-                image: "https://ipfs.moralis.io:2053/ipfs/QmcVfVhhPC3m2PxoXbP5FnskWtATzQjgc617cSXF9kT3gD/RWAs0.jpeg",
+                image: "https://luxshopping.vn/Uploads/Images/dec-2022-rolex.jpg",
                 valuation: infoNFT.valuation,
             })
             
@@ -127,7 +127,7 @@ const Tokenize = () => {
                     <div>
                     <div style={{textAlign:'left', display: 'flex', justifyContent: 'center', flexDirection:'column'}}>
                         <div style={{display: 'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
-                            <img src="https://ipfs.moralis.io:2053/ipfs/QmcVfVhhPC3m2PxoXbP5FnskWtATzQjgc617cSXF9kT3gD/RWAs0.jpeg" alt='asset' 
+                            <img src="https://luxshopping.vn/Uploads/Images/dec-2022-rolex.jpg" alt='asset' 
                                 style={{width: 200, height: 200, objectFit: 'cover', borderRadius: 10}}
                             />
 

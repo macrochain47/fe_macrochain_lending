@@ -7,16 +7,42 @@ import NFTAsset from '@/components/borrow'
 import { tokens } from '@/constants/token'
 import { Divider, Progress } from 'antd'
 import appApi from '@/api/appAPI'
+import { getERC20Contract } from '@/services/blockchain'
+import { useAppSelector } from '@/state/hook'
+import { USDC_CT, USDT_CT } from '@/constants/addressContract'
 
 const MyInfo = () => {
   const percent = 70
   const [myNFTs, setMyNFTs] = useState([])
-  
+  const [balance, setBalance] = useState({
+    usdt: '0.00',
+    usdc: '0.00',
+    klay: '0.00',
+  })  
+  const {appState, userState} = useAppSelector(state => state)
+
+  console.log(userState)
   useEffect(() => {
     const func = async () => {
       const myNFTs = await appApi.getMyNFT()
-      console.log(myNFTs)
       setMyNFTs(myNFTs.data)
+
+      const USDTContract = getERC20Contract(appState.web3, USDT_CT)
+      const USDCContract = getERC20Contract(appState.web3, USDC_CT)
+
+      const usdtBalance = await USDTContract.methods.balanceOf(userState.address).call()
+      const usdcBalance = await USDCContract.methods.balanceOf(userState.address).call()
+      console.log({
+        usdt: usdtBalance,
+        usdc: usdcBalance
+      })
+      
+      setBalance({
+        ...balance,
+        usdt: (Number(usdtBalance)/ 10**18).toFixed(2),
+        usdc: (Number(usdcBalance)/ 10**18).toFixed(2),
+        klay: '0'
+      })
     }
     func()
   }, [])
@@ -66,7 +92,7 @@ const MyInfo = () => {
           <div className='list-token'>
             {
               tokens.map((token, index) => (
-                <TokenItem key={index} name={token.name} balance={'0.000'} image={token.image} />
+                <TokenItem key={index} name={token.name} balance={index == 0 ? String(balance.usdt) : (index == 1 ? String(balance.usdc) : (Number(userState.balance) / 10**18).toFixed(2))} image={token.image} />
               ))
             }
           </div>

@@ -14,10 +14,4 @@ export const tokens = [
         image: '/assets/images/klay-token.png',
         address: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d'
     }
-    // {
-    //     name: 'DAI',
-    //     image: '/assets/images/dai-token.png',
-    //     address: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3'
-    // }
-
 ]

@@ -4,14 +4,22 @@ import React from 'react'
 import './NFTAsset.scss'
 
 const NFTAsset = ({data} : {data: any}) => {
+    console.log(data)
     return (
         <div className='nft-asset'>
-            <img 
-                alt="NFT" 
-                className='nft-image'
-                src={data.image}
-                style={{width:'100%', height:200, objectFit: 'cover'}}
-            />
+            <div>
+                <img 
+                    alt="NFT" 
+                    className='nft-image'
+                    src={data.image}
+                    style={{width:'100%', height:200, objectFit: 'cover'}}                
+                />
+                {
+                    data.status === 'listing' ?
+                        <div className='collateral111'>Asset is currently under collateral.</div>
+                        : <></>
+                }
+            </div>
 
             <div className='nft-info'>
                 <div className='nft-info-header'>

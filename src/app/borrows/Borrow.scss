@@ -243,3 +243,20 @@
     }
 }
 
+.button-create{
+    padding: 12px 20px;
+    background-color: rgb(56, 61, 81);
+    color: #ddd;
+    border: 1px solid rgba(235, 235, 239, 0.08)!important;
+    width: 180px;
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+.button-create:hover {
+    border: 1px solid rgba(235, 235, 239, 0.3)!important;
+}

@@ -15,8 +15,7 @@ export const shortenString = (str: string, headCount: number, tailCount: number)
  */
 export const countRepayment = (principal: number, apr: number, duration: number, durationType: string): number | null => {
     if (!['day', 'week', 'month'].includes(durationType)) return null;
- 
-    if (durationType === 'day') return (Math.round(principal + apr*principal*duration/(365*100))*100)/100
-    if (durationType === 'week') return Math.round((principal + apr*principal*duration/(52*100))*100)/100
-    else return Math.round((principal + apr*principal*duration/(12*100))*100)/100
+    if (durationType === 'day') return Number(Number(principal + principal*duration/365 * apr / 100).toFixed(2));
+    if (durationType === 'week') return Number(Number(principal + principal*7*duration/365 * apr / 100).toFixed(2));
+    else return Number(Number(principal + principal*30*duration/365*apr/100).toFixed(2));
 }

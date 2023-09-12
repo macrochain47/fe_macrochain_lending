@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 import React, { useEffect, useState } from 'react'
-import { getLendingContract } from '@/services/blockchain'
-import { InputNumber, Select } from 'antd'
+import { getLendingContract, getNFTBaseContract } from '@/services/blockchain'
+import { Button, InputNumber, Modal, Result, Select, Spin } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons'
 
 import './Borrow.scss'
@@ -11,14 +11,14 @@ import NFTAsset from '@/components/borrow'
 import { useAppSelector } from '@/state/hook'
 import { LendingCT, NFTBaseCT, USDC_CT, USDT_CT } from '@/constants/addressContract'
 import appApi from '@/api/appAPI'
-import { v4 as uuidv4 } from 'uuid';
+import { useRouter } from 'next/navigation'
 
 interface ITermProps {
   principal: number | null;
   principalType: string;
   principalAddress: string;
   apr: number | null;
-  duration: number | null;
+  duration: number;
   durationType: string ;
   openForOffer: boolean;
   repayment: number | null;
@@ -28,7 +28,7 @@ const Borrow = () => {
   const { userState, appState } = useAppSelector(state => state)
   const [myNFTs, setMyNFTs] = useState([])
   const [nft, setNft] = useState<any>(null)
-
+  const [loading, setLoading] = useState<boolean>(false)
   const [term, setTerm] = useState<ITermProps>({
     principal: 0,
     principalType: 'USDT',
@@ -39,13 +39,19 @@ const Borrow = () => {
     openForOffer: true,
     repayment: 0,
   })
-
+  const [openModal, setOpenModal] = useState(false)
+  const router = useRouter()
   useEffect(() => {
     const func = async () => {
-      const myNFTs = await appApi.getMyNFT()
-      setMyNFTs(myNFTs.data.filter((nft : any) => nft.status === 'default'))
-    }
+      const data = await appApi.getMyNFT()
 
+      const myNFTs = data.data.filter((nft : any) => nft.status === 'default')
+      console.log(myNFTs)
+      myNFTs.reverse()
+      console.log(myNFTs)
+
+      setMyNFTs(myNFTs)
+    }
     func()
   }, [])
 
@@ -64,32 +70,47 @@ const Borrow = () => {
       alert("Connect wallet before faucet token");
       return;
     }
+    setLoading(true)
+    const loanID = Math.floor(Math.random() * 1000000000)
+    const LendingContract = getLendingContract(appState.web3, LendingCT) 
+    const NFTBaseContract = getNFTBaseContract(appState.web3, NFTBaseCT)
+    
+    try {
+      const approveMethod = NFTBaseContract.methods.approve(LendingCT, nft.tokenID)
+    
+      await approveMethod.send({from: userState.address})
+  
+      const createLoanMethod = LendingContract.methods.listLoan(
+        NFTBaseCT,
+        loanID,
+        (term.durationType === 'day' ? term.duration : (term.durationType === 'week' ? Number(term.duration) * 7 : Number(term.duration) * 30)),
+        nft.tokenID,
+        term.principalAddress,
+        BigInt(Number(term.principal) * 1000000000000000000),
+        term.apr,
+      )
+  
+      await createLoanMethod.send({from: userState.address})
+  
+      await appApi.createLoan({
+        nftID: nft._id,
+        loanID: loanID,
+        valuation: nft.valuation,
+        principal: term.principal,
+        principalType: term.principalType,
+        principalAddress: term.principalAddress,
+        apr: term.apr,
+        duration: term.duration,
+        durationType: term.durationType,
+        repayment: term.repayment
+      })
+      setOpenModal(true)
+    } catch (error) {
+      console.log(error)
+    }
+    setLoading(false)
 
-    console.log({
-      nftID: nft._id,
-      loanID: uuidv4(),
-      valuation: nft.valuation,
-      princial: term.principal,
-      principalType: term.principalType,
-      principalAddress: term.principalAddress,
-      apr: term.apr,
-      duration: term.durationType === 'day' ? term.duration : (term.durationType === 'week' ? Number(term.duration) * 7 : Number(term.duration) * 30),
-    })
-
-    await appApi.createLoan({
-      nftID: nft._id,
-      loanID: uuidv4(),
-      valuation: nft.valuation,
-      principal: term.principal,
-      principalType: term.principalType,
-      principalAddress: term.principalAddress,
-      apr: term.apr,
-      duration: term.durationType === 'day' ? term.duration : (term.durationType === 'week' ? Number(term.duration) * 7 : Number(term.duration) * 30),
-    })
   }
-
-
-
 
   return (
     <div className='app-borrow'>
@@ -173,18 +194,36 @@ const Borrow = () => {
                       <Select.Option value="month">months</Select.Option>
                     </Select>
                   )}
-                  onChange={(value : (number | null)) => setTerm({...term, duration: value})}
+                  onChange={(value : (number | null)) => setTerm({...term, duration: Number(value)})}
                   controls={false}
                   size='large'
                   className='ation-input-number'
                 />
               </div>
               <p className='repayment'>Repayment: {term.repayment} {term.principalType} </p>
-              <div className="button-create" onClick={clickLendNFT}>Borrow</div>
+              <div className="button-create" onClick={clickLendNFT}>{loading ? <Spin />: 'Borrow'}</div>
             </div>
           </div>
         }
       </div>
+      <Modal title="Notification" open={openModal} centered 
+                width={800 - 32}
+                closable={true}
+                cancelButtonProps={{ style: { display: 'none' } }}
+                okButtonProps={{style: {display: 'none'}}}
+                onCancel={() => setOpenModal(false)}
+            >
+        <Result
+          status="success"
+          title="Successfully Listed Your Asset!"
+          subTitle="Order number: 2017182818828182881. Cloud server configuration takes 1-5 minutes, please wait."
+          extra={[
+            <Button type="primary" key="console" onClick={() => router.replace('/')}>
+              Go Home
+            </Button>
+          ]}
+        />
+      </Modal>
     </div>
   )
 }
