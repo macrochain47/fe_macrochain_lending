@@ -2,23 +2,38 @@ import axiosClient from "./axiosClient";
 import axios from "axios";
 
 class AppAPI {
-    LOYALCHAIN_API: string;
+    MYAPI: string;
     constructor(api: string | undefined) {
-        this.LOYALCHAIN_API = api ? api : "http://localhost:3333/api";
+        this.MYAPI = api ? api : "http://localhost:3333/api";
     }
     // Authen
     login = (data: any) => {
-        const url = this.LOYALCHAIN_API.concat("/auth/login");
+        const url = this.MYAPI.concat("/auth/login");
         return axios.post(url, data, {
             withCredentials: true,
         });
     }
     
     getNewToken =  () => {
-        const url = this.LOYALCHAIN_API.concat("/auth/token");
+        const url = this.MYAPI.concat("/auth/token");
         return axios.get(url, {
             withCredentials: true,
         });
+    }
+
+    addNFT = (data: any) => {
+        const url = this.MYAPI.concat("/nft/add");
+        return axiosClient.post(url, data);
+    }
+
+    getMyNFT = () => {
+        const url = this.MYAPI.concat("/nft/my");
+        return axiosClient.get(url);
+    }
+
+    createLoan = (data : any) => {
+        const url = this.MYAPI.concat("/loan/create");
+        return axiosClient.post(url, data);
     }
 }
 

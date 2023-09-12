@@ -3,22 +3,23 @@
 import React from 'react'
 import './NFTAsset.scss'
 
-const NFTAsset = () => {
+const NFTAsset = ({data} : {data: any}) => {
     return (
         <div className='nft-asset'>
             <img 
                 alt="NFT" 
                 className='nft-image'
-                src="https://themegamaxi.com/wp-content/uploads/2022/10/2-1-1-300x300.jpeg" 
+                src={data.image}
+                style={{width:'100%', height:200, objectFit: 'cover'}}
             />
 
             <div className='nft-info'>
                 <div className='nft-info-header'>
-                    <p className='nft-id'>#3131</p>
-                    <p className='nft-principal'>2000 USD</p>
+                    <p className='nft-id'>#000{data.tokenID < 10 ? '0' + data.tokenID : data.tokenID}</p>
+                    <p className='nft-principal'>{data.valuation} USD</p>
                 </div>
                 <p className='nft-name'>
-                    AzukiAzukiAzuki 
+                    {data.tokenName} 
                 </p>
             </div>
         </div>

@@ -9,7 +9,7 @@ const persistConfig = {
   key: "root",
   storage: storage,
   stateReconciler: autoMergeLevel2,
-  blacklist: ['appState', 'loadingState'],
+  blacklist: ['appState', 'loadingState', 'userState'],
 };
 
 const pReducer = persistReducer<RootState>(persistConfig, rootReducer);

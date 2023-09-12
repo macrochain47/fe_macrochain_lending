@@ -203,7 +203,7 @@ const Header = () => {
           <div className='header-link'>
               <Link href="/borrows" className='option-link'>Borrow</Link>
               <Link href="/lends" className='option-link'>Lend</Link>
-              <Link href="/loans" className='option-link'>Tokenize</Link>
+              <Link href="/tokenize" className='option-link'>Tokenize</Link>
           </div>
 
           {

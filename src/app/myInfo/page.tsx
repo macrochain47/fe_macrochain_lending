@@ -1,14 +1,27 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import "./MyInfo.scss"
 import TokenItem from '@/components/TokenItem'
 import NFTAsset from '@/components/borrow'
 import { tokens } from '@/constants/token'
 import { Divider, Progress } from 'antd'
+import appApi from '@/api/appAPI'
 
 const MyInfo = () => {
   const percent = 70
+  const [myNFTs, setMyNFTs] = useState([])
+  
+  useEffect(() => {
+    const func = async () => {
+      const myNFTs = await appApi.getMyNFT()
+      console.log(myNFTs)
+      setMyNFTs(myNFTs.data)
+    }
+    func()
+  }, [])
+  
+
   return (
     <div className='app-myinfo'>
       <div className='app-myinfo--left'>
@@ -36,11 +49,11 @@ const MyInfo = () => {
 
         <p className='header'>Collateral & Asset</p>
         <div className='app-myinfo--left--nfts'>
-          <NFTAsset />
-          <NFTAsset />
-          <NFTAsset />
-          <NFTAsset />
-          <NFTAsset />
+          {
+            myNFTs.map((nft, index) => (
+              <NFTAsset data={nft}/>
+            ))
+          }
         </div>
 
 

@@ -9,7 +9,7 @@
 
     // justify-content: space-between;
     .loan-id {
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 600;
         color: #ccc;
         margin-bottom: 10px;
@@ -21,8 +21,8 @@
     }
 
     .loan-nft-info {
-        margin-left: 20px;
-        width: 320px;
+        margin-left: 30px;
+        width: 400px;
         .name-nft {
             font-size: 1.4rem;
             font-weight: 700;
@@ -82,6 +82,14 @@
         .btn-action:last-child {
             margin-left: 20px;
         }
+
+        Button {
+            background-color: rgb(56, 61, 81);
+            border: 1px solid rgba(235, 235, 239, 0.08)!important;
+            border-radius: 4px !important;
+            margin: 0 20px;
+        } 
+
     }
 
     .loan-left {
@@ -99,4 +107,6 @@
             text-align: center;
         }
     }
+
+
 }

@@ -2,12 +2,13 @@
     width: calc(100vw - var(--sidebar-width));
     position: fixed;
     display: flex;
-    z-index: 2;
+    z-index: 10;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     border-bottom: 1px solid var(--hover-color);
     margin-left: var(--sidebar-width);
+    background-color: #1b2030;
 
     &--container {
         display: flex;

@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 import React, { useEffect, useState } from 'react'
-import { getNFTBaseContract } from '@/services/blockchain'
+import { getLendingContract } from '@/services/blockchain'
 import { InputNumber, Select } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons'
 
@@ -9,11 +9,14 @@ import './Borrow.scss'
 import { countRepayment } from '@/services/helper'
 import NFTAsset from '@/components/borrow'
 import { useAppSelector } from '@/state/hook'
-import { NFTBaseCT } from '@/constants/addressContract'
-import Web3 from 'web3'
+import { LendingCT, NFTBaseCT, USDC_CT, USDT_CT } from '@/constants/addressContract'
+import appApi from '@/api/appAPI'
+import { v4 as uuidv4 } from 'uuid';
+
 interface ITermProps {
   principal: number | null;
   principalType: string;
+  principalAddress: string;
   apr: number | null;
   duration: number | null;
   durationType: string ;
@@ -23,11 +26,13 @@ interface ITermProps {
 
 const Borrow = () => {
   const { userState, appState } = useAppSelector(state => state)
-  const myWeb3 = new Web3(window.ethereum);
+  const [myNFTs, setMyNFTs] = useState([])
+  const [nft, setNft] = useState<any>(null)
 
   const [term, setTerm] = useState<ITermProps>({
     principal: 0,
-    principalType: 'ETH',
+    principalType: 'USDT',
+    principalAddress: USDT_CT,
     apr: 0,
     duration: 0,
     durationType: 'day',
@@ -35,55 +40,55 @@ const Borrow = () => {
     repayment: 0,
   })
 
-  const [nft, setNft] = useState<any>(null)
+  useEffect(() => {
+    const func = async () => {
+      const myNFTs = await appApi.getMyNFT()
+      setMyNFTs(myNFTs.data.filter((nft : any) => nft.status === 'default'))
+    }
 
-  
+    func()
+  }, [])
+
   useEffect(() => {
     if (term.principal && term.apr && term.duration){
       setTerm({...term, repayment: countRepayment(term.principal, term.apr, term.duration, term.durationType)})
     }
-  }, [term])
-
-  const handleClickSelectNFT = () => {
-    setNft(true)
+  }, [term.principal, term.principalType, term.apr, term.duration, term.durationType])
+  
+  const handleClickSelectNFT = (data : any) => {
+    setNft(data)
   }
 
   const clickLendNFT = async () => {
-    console.log('vcl')
     if (!userState.isAuthenticated) {
       alert("Connect wallet before faucet token");
       return;
     }
 
-    const NFTBaseContract = getNFTBaseContract(appState.web3, NFTBaseCT)
+    console.log({
+      nftID: nft._id,
+      loanID: uuidv4(),
+      valuation: nft.valuation,
+      princial: term.principal,
+      principalType: term.principalType,
+      principalAddress: term.principalAddress,
+      apr: term.apr,
+      duration: term.durationType === 'day' ? term.duration : (term.durationType === 'week' ? Number(term.duration) * 7 : Number(term.duration) * 30),
+    })
 
-    const dataSign = [
-      {
-        type: "address",
-        value: NFTBaseCT,
-      },
-      {
-        type: "address",
-        value: userState.address,
-      }
-    ]
-    const message = appState.web3.utils.soliditySha3(...dataSign)
-    console.log(message)
-    const signature = await myWeb3.eth.personal.sign(message, userState.address, '')
-    console.log(signature)
-    
-    const tokenizeMethod = NFTBaseContract.methods.tokenize(
-      term.principal,
-      signature
-    )
-
-    try {
-      await tokenizeMethod.estimatesGas({from: userState.address})
-      const tokenizeRecipt = await tokenizeMethod.send({from: userState.address})
-    } catch (error) {
-      console.log(error)
-    }
+    await appApi.createLoan({
+      nftID: nft._id,
+      loanID: uuidv4(),
+      valuation: nft.valuation,
+      principal: term.principal,
+      principalType: term.principalType,
+      principalAddress: term.principalAddress,
+      apr: term.apr,
+      duration: term.durationType === 'day' ? term.duration : (term.durationType === 'week' ? Number(term.duration) * 7 : Number(term.duration) * 30),
+    })
   }
+
+
 
 
   return (
@@ -92,18 +97,13 @@ const Borrow = () => {
 
       <div className='content'>
         <div className='app-borrow-nfts'>
-          <div onClick={handleClickSelectNFT}>
-            <NFTAsset />
-          </div>
-          <div onClick={handleClickSelectNFT}>
-            <NFTAsset />
-          </div>
-          <div onClick={handleClickSelectNFT}>
-            <NFTAsset />
-          </div>
-          <div onClick={handleClickSelectNFT}>
-            <NFTAsset />
-          </div>
+          {
+            myNFTs.map((nft, index) => (
+              <div onClick={() => handleClickSelectNFT(nft)}>
+                <NFTAsset data={nft} />
+              </div>
+            ))
+          }
         </div>
         {
           <div className='app-borrow-info'>
@@ -116,7 +116,7 @@ const Borrow = () => {
                 nft != null &&
                 <>  
                   <div className='collateral'>
-                    <img src="https://themegamaxi.com/wp-content/uploads/2022/10/2-1-1-300x300.jpeg" 
+                    <img src={nft.image} 
                       alt="azuki" 
                       width={100} 
                       height={100}
@@ -124,11 +124,11 @@ const Borrow = () => {
                     />
 
                     <div>
-                      <p className='nft-name'>Starbuck NFT</p>
-                      <p className='info-nft--prop'>Token ID: <span>#6932</span></p>
+                      <p className='nft-name'>{nft.tokenName}</p>
+                      <p className='info-nft--prop'>Token ID: <span>#000{nft.tokenID}</span></p>
                       <p className='info-nft--prop'>Contract address:  <span> 0x5af0...25a5  </span> </p>
 
-                      <p className='info-nft--evaluation'>2000 USD</p>
+                      <p className='info-nft--evaluation'>${nft.valuation} USD</p>
                     </div>
 
 
@@ -147,9 +147,9 @@ const Borrow = () => {
                   className='ation-input-number'
                   addonBefore={<p className='action--content-addon'>Principal</p>}
                   addonAfter={(
-                    <Select style={{width: 100, color: 'white', fontWeight: 600}} value={term.principalType} onChange={(value : string) => setTerm({...term, principalType: value})}>
-                      <Select.Option value="ETH">ETH</Select.Option>
+                    <Select style={{width: 100, color: 'white', fontWeight: 600}} value={term.principalType} onChange={(value : string) => setTerm({...term, principalType: value, principalAddress: value === "USDT" ? USDT_CT : ( value === "USDC" ? USDC_CT : '')})}>
                       <Select.Option value="USDT">USDT</Select.Option>
+                      <Select.Option value="USDC">USDC</Select.Option>
                       <Select.Option value="KLAY">KLAY</Select.Option>
                     </Select>
                   )}

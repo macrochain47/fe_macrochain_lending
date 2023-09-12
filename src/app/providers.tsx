@@ -22,9 +22,7 @@ export function Providers({ children } : {
       <PersistGate persistor={persistor}>
         <StyleProvider cache={cache}>
           <StyledComponentsRegistry>
-            {/* <ThemeProvider> */}
               {children}
-            {/* </ThemeProvider> */}
           </StyledComponentsRegistry>
         </StyleProvider>
       </PersistGate>

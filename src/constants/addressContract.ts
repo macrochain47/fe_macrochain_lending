@@ -1,2 +1,8 @@
 export const NFTBaseCT = '0xFDf9886870815bdd90fFb9747c38748c0d89809D'
 
+export const LendingCT = ""
+
+export const USDT_CT = "0xe406f847D7269B1996f4B0ee0EED7fD3218C8141"
+
+export const USDC_CT = "0x4eA5cB437C7C6DdE93e4AA1D53B18bA9c03F8345"
+
