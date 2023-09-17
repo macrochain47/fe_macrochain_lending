@@ -70,14 +70,40 @@
     }
 
     .ant-input-number-group-addon {
-        color:white;
+        color:#eee;
         font-weight: 600;
     }
-
-
 }   
 
 .modal-tokenize {
     margin-left: var(--sidebar-width) !important;
 }
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: red;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: red;
+  }
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: red !important;
+}
 
+.ant-select-selector {
+    border-radius: 0 !important;
+    background-color: rgba(57, 55, 90, 0.5)!important;
+    border: none !important;
+    width: 330px !important;
+    height: 50px !important;
+}
+.ant-select-selection-placeholder {
+    position: relative !important;
+    top: 10px !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+}
+.ant-select-selection-item {
+    color: #eee !important;
+    line-height: 50px !important;
+    font-weight: 600 !important;
+    font-size: 1.1rem !important;
+}

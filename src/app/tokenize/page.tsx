@@ -2,11 +2,12 @@
 import { Button, Input, InputNumber, Modal, Result, Spin } from 'antd'
 import React, { useState } from 'react'
 import "./Tokenize.scss"
-import { getNFTBaseContract } from '@/services/blockchain'
+import { getERC721Contract } from '@/services/blockchain'
 import { NFTBaseCT } from '@/constants/addressContract'
 import { useAppSelector } from '@/state/hook'
 import { CheckCircleTwoTone } from '@ant-design/icons'
 import appApi from '@/api/appAPI'
+import ModalLogin from '@/components/ModalLogin/ModalLogin'
 
 const Tokenize = () => {
     const {userState, appState} = useAppSelector(state => state)
@@ -32,7 +33,7 @@ const Tokenize = () => {
 
         setIsMinting(true)
         setOpenModal(true)
-        const NFTBaseContract = getNFTBaseContract(appState.web3, NFTBaseCT)
+        const NFTBaseContract = getERC721Contract(appState.web3, NFTBaseCT)
 
         const dataSign = [
             {
@@ -89,6 +90,7 @@ const Tokenize = () => {
 
     return (
         <div className='app-tokenize'>
+            {userState.isAuthenticated ? null : <ModalLogin />}
             <h1>Tokenize</h1>  
             <div className='token-field'>
                 <p className='title'>Name</p>

@@ -22,7 +22,9 @@ const LoanItem = ({data} : {data : any}) => {
     const LendingContract = getLendingContract(appState.web3, LendingCT)
     const ERC20Contract = getERC20Contract(appState.web3, data.principalAddress)
     try {
-      const approveMethod = await ERC20Contract.methods.approve(LendingCT, BigInt(Number(data.repayment)*1000000000000000000)).send({from: userState.address})
+      const repayment = await LendingContract.methods.getRepayment(data.loanID).call();
+
+      const approveMethod = await ERC20Contract.methods.approve(LendingCT, BigInt(repayment)).send({from: userState.address})
       const paybackRecipt = await LendingContract.methods.payback(NFTBaseCT, data.loanID).send({from: userState.address})
 
       setOpenModal(true)

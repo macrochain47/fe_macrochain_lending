@@ -10,6 +10,7 @@ import appApi from '@/api/appAPI'
 import { getERC20Contract } from '@/services/blockchain'
 import { useAppSelector } from '@/state/hook'
 import { USDC_CT, USDT_CT } from '@/constants/addressContract'
+import ModalLogin from '@/components/ModalLogin/ModalLogin'
 
 const MyInfo = () => {
   const percent = 70
@@ -50,6 +51,7 @@ const MyInfo = () => {
 
   return (
     <div className='app-myinfo'>
+      {userState.isAuthenticated ? null : <ModalLogin />}
       <div className='app-myinfo--left'>
         <div className='app-myinfo--left--asset'>
           <div className='asset-item'>

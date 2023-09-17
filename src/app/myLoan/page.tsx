@@ -4,11 +4,13 @@ import './MyLoan.scss'
 import { Avatar, Segmented } from 'antd'
 import LoanItem from '@/components/LoanItem'
 import appApi from '@/api/appAPI'
+import { useAppSelector } from '@/state/hook'
+import ModalLogin from '@/components/ModalLogin/ModalLogin'
 
 
 const myLoan = () => {
   const [dataLoans, setDataLoans] = React.useState([])
-
+  const userState = useAppSelector(state => state.userState)
   const fetchDataLoans = async () => {
     const data = await appApi.getMyBorrow()
     const listLoan = data.data;
@@ -24,6 +26,7 @@ const myLoan = () => {
   
   return (
     <div className='app-myloan'>
+      {userState.isAuthenticated ? null : <ModalLogin />}
       <p className='app-myloan--header'>Your Loan</p>
       <Segmented
         options={[
