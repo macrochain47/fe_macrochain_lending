@@ -8,9 +8,6 @@ class AppAPI {
     }
 
     // Authen
-    Authen = {
-        
-    }
     
     login = (data: any) => {
         const url = this.MYAPI.concat("/auth/login");
@@ -48,12 +45,12 @@ class AppAPI {
         return axiosClient.get(url);
     }
 
-    grantAsset = (data : {tokenID: string, uri: string, tokenName: string, user: string, image: string, valuation: number, signature: string}) => {
+    grantAsset = (data : {tokenID: number, uri: string, tokenName: string, user: string, image: string, valuation: number, signature: string}) => {
         const url = this.MYAPI.concat("/asset/grant");
         return axiosClient.post(url, data);
     }
 
-    addAsset = (data : {tokenID: string, uri: string, tokenName: string, user:string, image: string, valuation: number}) => {
+    addAsset = (data : {tokenID: number, uri: string, tokenName: string, user:string, image: string, valuation: number}) => {
         const url = this.MYAPI.concat("/asset/add");
         return axiosClient.post(url, data);
     }
@@ -83,7 +80,7 @@ class AppAPI {
         collateralID: string, loanID: string, principal: number, principalType: string, 
         principalAddress: string, apr: number, duration: number, durationType: string, repayment: number;
     }) => {
-        const url = this.MYAPI.concat("/create")
+        const url = this.MYAPI.concat("/loan/create")
         return axiosClient.post(url, data);
     }
 
@@ -98,7 +95,7 @@ class AppAPI {
     }
 
     makeOffer = ( data : {
-        loanID: string, principal: number, principalType: string, 
+        loanID: string, offerID: string, principal: number, principalType: string, 
         principalAddress: string, apr: number, duration: number, durationType: string, repayment: number;
     }) => {
         const url = this.MYAPI.concat("/loan/make-offer");

@@ -9,10 +9,7 @@ import appApi from '@/api/appAPI'
 import ModalLogin from '@/components/ModalLogin/ModalLogin'
 import { useRouter } from 'next/navigation'
 import { hdConnectWallet } from '@/layouts/Header'
-import { createHelia } from 'helia'
-import { json } from '@helia/json'
 import Moralis from 'moralis'
-import { EvmSimpleBlockish } from 'moralis/common-evm-utils'
 
 const LIST_ADMINS = ['0x6225D07A59be4F47400E8885d8EFC78FF7D9e171']
 
@@ -25,6 +22,7 @@ const Tokenize = () => {
         type: "",
         image: "",
         owner: "",
+        uri: ""
     })
 
     const [openModal, setOpenModal] = useState(false)
@@ -32,21 +30,36 @@ const Tokenize = () => {
     const router = useRouter()
     
     useEffect(() => {
-        console.log(userState)
-        if (userState.isAuthenticated && !LIST_ADMINS.includes(userState.address)){
-            alert("You aren't admin.")
-            router.push('/')
-        } 
+
+        const myTimeout = setTimeout(() => {
+            if (userState.isAuthenticated && !LIST_ADMINS.includes(userState.address)){
+                alert("You aren't admin.")
+                router.push('/')
+            } 
+        }, 500)
+
+        return () => {
+            clearInterval(myTimeout)
+        }
     }, [userState])
 
     const sendAsset = async () => {          
-        
+        if (assetData == 0 || assetData.name == "" || assetData.valuation == 0 || assetData.type == "" || assetData.image == "" || assetData.owner == ""){
+            alert("Please fill all field.")
+            return
+        }
+        if (!userState.isAuthenticated){
+            hdConnectWallet()
+            return
+        }
         setLoading(true)
         setOpenModal(true)
-        await Moralis.start({
-            apiKey: '6vBl8N0kdP8zUtDcnxIJ8rvS57KTJMPXVIWIpjuXeQycVyYw5R2Klwnsrp79nIfd',
-            // ...and any other configuration
-        });
+        if (!Moralis.Core.isStarted) {
+            await Moralis.start({
+                apiKey: '6vBl8N0kdP8zUtDcnxIJ8rvS57KTJMPXVIWIpjuXeQycVyYw5R2Klwnsrp79nIfd',
+                // ...and any other configuration
+            });
+        }
         const abi = [
             {
                 path: "metadata.json",
@@ -69,12 +82,12 @@ const Tokenize = () => {
         const mintMethod = ERC721CT.methods.adminMintAsset(assetData.valuation, uri, assetData.owner);
         await mintMethod.estimateGas({from: userState.address})
         
-        const mintRecipt = mintMethod.send({from: userState.address})
-        setAssetData({...assetData, tokenID: parseInt(mintRecipt.logs[1].data)})
+        const mintRecipt = await mintMethod.send({from: userState.address})
+        console.log(mintRecipt)
+        setAssetData({...assetData, tokenID: parseInt(mintRecipt.logs[1].data), uri: uri})
 
-        
         await appApi.addAsset({
-            tokenID: String(parseInt(mintRecipt.logs[1].data)), // tokenID,
+            tokenID: parseInt(mintRecipt.logs[1].data), // tokenID,
             uri : uri,
             tokenName: assetData.name,
             user: assetData.owner,
@@ -90,8 +103,8 @@ const Tokenize = () => {
     }
 
     return (
-        <div className='app-tokenize'>
-            {/* {userState.isAuthenticated ? null : <ModalLogin />} */}
+        <div className='app-admin-tokenize'>
+            {userState.isAuthenticated ? null : <ModalLogin />}
             <h1>Tokenize</h1>  
             <div className='token-field'>
                 <p className='title'>Name</p>
@@ -178,7 +191,7 @@ const Tokenize = () => {
                     <div>
                     <div style={{textAlign:'left', display: 'flex', justifyContent: 'center', flexDirection:'column'}}>
                         <div style={{display: 'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
-                            <img src="https://luxshopping.vn/Uploads/Images/dec-2022-rolex.jpg" alt='asset' 
+                            <img src={assetData.image} alt='asset' 
                                 style={{width: 200, height: 200, objectFit: 'cover', borderRadius: 10}}
                             />
 
@@ -188,12 +201,17 @@ const Tokenize = () => {
                             </div>
                         </div>
 
-                        <p>Token ID: #00000{assetData.tokenID}</p>
-                        <p>Token name: {assetData.name}</p>
-                        <p>Owner: {assetData.owner}</p>
-                    </div>
-                    </div>
+                        <p style={{fontSize: '1rem', fontWeight: 500}}>Token ID: <span style={{color: "#fff"}}>#00000{assetData.tokenID}</span></p>
+                        <p style={{fontSize: '1rem', fontWeight: 500}}>Token name: <span style={{color: "#fff"}}>{assetData.name}</span></p>
+                        <p style={{fontSize: '1rem', fontWeight: 500}}>Metadata: <span style={{color: "#fff"}}>{assetData.uri}</span></p>
+                        <p style={{fontSize: '1rem', fontWeight: 500}}>Owner: <span style={{color: "#fff"}}>{assetData.owner}</span></p>
 
+                        <div className={{display: 'flex', flexDirection: 'row'}}>
+                            <p style={{fontSize: '1rem', fontWeight: 500}}>Valuation: <span style={{color: "#fff"}}>{assetData.valuation}</span></p>
+                            <p style={{fontSize: '1rem', fontWeight: 500}}>Type: <span style={{color: "#fff"}}>{assetData.type}</span></p>
+                        </div>
+                    </div>
+                    </div>
                 }
             </Modal>
         </div>  

@@ -5,24 +5,29 @@
     padding: 20px;
     border-radius: 8px;
     display: flex;
-    width: fit-content;
+    width: 100%;
 
     // justify-content: space-between;
     .loan-id {
         font-size: 1rem;
-        font-weight: 600;
+        font-weight: 500;
         color: #ccc;
         margin-bottom: 10px;
+        span {
+            font-weight: 400;
+            color: #eee
+        }
     }
     &--image {
-        width: 240px;
-        height: 240px;
+        width: 250px;
+        height: 260px;
         border-radius: 6px;
+        object-fit: cover;
     }
 
     .loan-nft-info {
         margin-left: 30px;
-        width: 400px;
+        width: 460px;
         .name-nft {
             font-size: 1.4rem;
             font-weight: 700;
@@ -32,12 +37,18 @@
             font-size: 1rem;
             font-weight: 500;
             color: #ccc;
-            margin-top: 6px;
+            margin-top: 2px;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             span {
                 margin-left: auto;
+                color: #fff;
+            }
+            a {
+                text-decoration: underline;
+                color: #fff;
+
             }
         }
     }
@@ -52,12 +63,13 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 12px;
-        margin-top: 20px;
+        column-gap : 40px;
+        margin-top: 10px;
 
         .term-item {
             border: 1px solid #ccc;
             border-radius: 3px;
-            padding: 10px;
+            padding: 6px 12px;
 
             &--title {
                 font-size: 1rem;
@@ -66,8 +78,9 @@
             }
 
             &--value {
-                font-size: 1.2rem;
-                font-weight: 700;
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: rgb(169, 226, 251);
                 text-align: right;
             }
 

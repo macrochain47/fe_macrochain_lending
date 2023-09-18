@@ -23,6 +23,6 @@
       "@/*": ["./src/*"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/home/NFTListing"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/home/NFTListing", "src/app/tokenize/page.jsx"],
   "exclude": ["node_modules"]
 }

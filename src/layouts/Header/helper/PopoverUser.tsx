@@ -7,8 +7,10 @@ import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 
 import React from 'react'
 import { userLogOut } from '..'
+import { useRouter } from 'next/navigation'
 const PopoverUser = () => {
     const userState = useAppSelector(state => state.userState)
+    const router = useRouter()
     return (
         <Popover placement="bottomRight" content={(
             <div className='popover-user' >
@@ -35,7 +37,13 @@ const PopoverUser = () => {
                 <CopyOutlined style={{top: -2, marginRight: 10}}/>
                 Coppy address
                 </div>
-
+                
+                <div style={{display: 'flex', alignItems:'center'}}
+                    onClick={() => router.push('/admin/tokenize')}
+                >
+                {/* <CopyOutlined style={{top: -2, marginRight: 10}}/> */}
+                Admin Page
+                </div>
                 <div style={{display: 'flex', alignItems:'center'}}
                     onClick={userLogOut}
                 >

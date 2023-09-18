@@ -13,7 +13,7 @@ import appApi from '@/api/appAPI'
 import { useRouter } from 'next/navigation'
 import ModalLogin from '@/components/ModalLogin/ModalLogin'
 import { v4 as uuidv4 } from 'uuid'
-import { LendingCT, USDC_CT, USDT_CT } from '@/constants/addressContract'
+import { ERC721CT_Address, LendingCT_Address, USDC_CT_Address, USDT_CT_Address} from '@/constants/addressContract'
  
 
 interface ITermProps {
@@ -35,7 +35,7 @@ const Borrow = () => {
   const [term, setTerm] = useState<ITermProps>({
     principal: 0,
     principalType: 'USDT',
-    principalAddress: USDT_CT,
+    principalAddress: USDT_CT_Address,
     apr: 0,
     duration: 0,
     durationType: 'day',
@@ -55,8 +55,8 @@ const Borrow = () => {
 
       setMyAssets(myAssets)
     }
-    func()
-  }, [])
+    userState.isAuthenticated && func()
+  }, [userState.address])
 
   useEffect(() => {
     if (term.principal && term.apr && term.duration){
@@ -81,21 +81,18 @@ const Borrow = () => {
     const ERC721CT = getERC721Contract(appState.web3)
     
     try {
-      await ERC721CT.methods.approve(LendingCT, asset.tokenID).send({from: userState.address})
-    
-      const createLoanRecipt = TangilendCT.methods.createLoan(
+      await ERC721CT.methods.approve(LendingCT_Address, asset.tokenID).send({from: userState.address})
+
+      const createLoanRecipt = await TangilendCT.methods.createLoan(
         loanID,
-        LendingCT,
+        ERC721CT_Address,
         asset.tokenID,
-        term.principal,
+        BigInt(Number(term.principal) * 1000000000000000000),
         term.apr,
         (term.durationType === 'day' ? term.duration : (term.durationType === 'week' ? Number(term.duration) * 7 : Number(term.duration) * 30)),
         term.principalAddress
-      )
+      ).send({from: userState.address})
 
-
-  
-  
       await appApi.createNewLoan({
         collateralID: asset._id,
         loanID: loanID,
@@ -141,21 +138,16 @@ const Borrow = () => {
                 <>  
                   <div className='collateral'>
                     <img src={asset.image} 
-                      alt="azuki" 
+                      alt="asset image" 
                       width={100} 
                       height={100}
-                      className='img-collateral'
                     />
-
-                    <div>
+                    <div className='collateral-props'>
                       <p className='asset-name'>{asset.tokenName}</p>
                       <p className='info-asset--prop'>Token ID: <span>#000{asset.tokenID}</span></p>
                       <p className='info-asset--prop'>Contract address:  <span> 0x5af0...25a5  </span> </p>
-
                       <p className='info-asset--evaluation'>${asset.valuation} USD</p>
                     </div>
-
-
                     <div className='btn-info'>
                       <InfoCircleOutlined className='btn-info--icon'/>
                     </div>
@@ -172,7 +164,7 @@ const Borrow = () => {
                   addonBefore={<p className='action--content-addon'>Principal</p>}
                   addonAfter={(
                     <Select style={{width: 100, color: 'white', fontWeight: 600}} value={term.principalType} 
-                    onChange={(value : string) => setTerm({...term, principalType: value, principalAddress: value === "USDT" ? USDT_CT : ( value === "USDC" ? USDC_CT : '')})}>
+                    onChange={(value : string) => setTerm({...term, principalType: value, principalAddress: value === "USDT" ? USDT_CT_Address : ( value === "USDC" ? USDC_CT_Address : '')})}>
                       <Select.Option value="USDT">USDT</Select.Option>
                       <Select.Option value="USDC">USDC</Select.Option>
                       <Select.Option value="KLAY">KLAY</Select.Option>
