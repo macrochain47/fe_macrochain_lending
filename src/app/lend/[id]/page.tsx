@@ -2,139 +2,80 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import './LendingPage.scss'
-import { countRepayment, shortenString } from '@/services/helper'
+import { countRepayment, getAddressOfStableCoin, shortenString } from '@/services/helper'
 
 import { Button, InputNumber, Progress, Select, Space, Table, Tag, Divider, Spin, Modal, Result} from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import appApi from '@/api/appAPI'
 import { useParams, useRouter } from 'next/navigation'
-import { LendingCT, NFTBaseCT } from '@/constants/addressContract'
 import { useAppSelector } from '@/state/hook'
 import { getERC20Contract, getLendingContract } from '@/services/blockchain'
-import { ERC2Data } from '@/contracts/ERC20'
+import { ERC721CT_Address, LendingCT_Address, USDT_CT_Address } from '@/constants/addressContract'
+import { v4 as uuidv4 } from 'uuid'
 
 interface DataType {
   key: string;
   principal: number;
+  principalType: string;
   apr: number;
   term: string;
   tags: string[];
+  offerID: string;
+  offer_id: string;
+  
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: 'Principal',
-    dataIndex: 'principal',
-    key: 'principal',
-    render: (text) => <a>{text}</a>,
-    sorter: (a, b) => a.principal - b.principal,
 
-  },
-  {
-    title: 'APR',
-    dataIndex: 'apr',
-    key: 'apr',
-    render: (number) => <p>{number}%</p>,
-    sorter: (a, b) => a.apr - b.apr,
-  },
-  {
-    title: 'Term',
-    dataIndex: 'term',
-    key: 'term',
-    sorter: (a, b) => a.term.length - b.term.length,
-  },
-  {
-    title: 'Lender',
-    key: 'Lender',
-    dataIndex: 'tags',
-    render: (text) => <a>{text}</a>
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Accept</a>
-        <a>Delete</a>
-      </Space>
-    ),
-  },
-];
-
-const data: DataType[] = [
-  {
-    key: '1',
-    principal: 1500,
-    apr: 15,
-    term: '2 month',
-    tags: ['0x9A3281751c620B6c9528c9811abd8903b9B8c23f'],
-  },
-  {
-    key: '2',
-    principal: 1500,
-    apr: 17,
-    term: '70 days',
-    tags: ['0x6225D07A59be4F47400E8885d8EFC78FF7D9e171'],
-  },
-  {
-    key: '3',
-    principal: 2000,
-    apr: 20,
-    term: '60 days',
-    tags: ['0xa42c95Ba5fCEC7f56697b5c7Ecc55E55F4A1FE7E'],
-  },
-  {
-    key: '4',
-    principal: 2000,
-    apr: 13,
-    term: '30 days',
-    tags: ['0x4bC523b9950dfc1d32f519e32242e2C5f835853A'],
-  },
-  {
-    key: '5',
-    principal: 2000,
-    apr: 12,
-    term: '1 month',
-    tags: ['0xaa1cF60f29Ce05B80B23788E58A99b9a617BA52b'],
-  },
-];
 
 interface IOffer {
-  principal: number | null,
-  principalType: string | null,
-  apr: number | null,
-  duration: number | null,
-  durationType: string | null,
-  repayment: number | null
+  principal: number,
+  principalType: string,
+  principalAddress: string,
+  apr: number,
+  duration: number,
+  durationType: string,
+  repayment: number
 }
 
-const getRepayment = (offer: IOffer) => {
-  if (offer.apr && offer.principal && offer.duration && offer.durationType) {
-    return countRepayment(offer.apr, offer.principal, offer.duration, offer.durationType)
-  }
-  else return null
-}
 
 const LendingPage = () => { 
   const [percent, setPercent] = useState(0);
   const [offer, setOffer] = useState<IOffer>({
     principal: 0,
     principalType: 'USDT',
+    principalAddress: USDT_CT_Address,
     apr: 0,
     duration: 0,
     durationType: 'day',
     repayment: 0,
   })
+
+  const [listOffer, setListOffer] = useState<any>([])
   const urlParams = useParams();
   const [dataLoan, setDataLoan] = useState<any>({})
   const [loading, setLoading] = useState<boolean>(false)
   const [openModal, setOpenModal] = useState(false)
-
   const router = useRouter()
+
   const fetchDataLoan = async () => {
     const data = await appApi.getLoan(String(urlParams.id))
     setDataLoan(data.data)
-    console.log(data)
+    console.log(data.data)
+    const offers = await appApi.getOfferOfLoan(String(urlParams.id))
+    const curOffer : DataType[] = offers.data.map((item : any, index: number) => {
+      return {
+        key: String(index),
+        principal: String(item.principal + " " + item.principalType),
+        apr: item.apr,
+        term: `${item.duration} ${item.durationType}`,
+        tags: [item.lender.address],
+        offerID: item.offerID,
+        offer_id: item._id
+      }
+      }
+    )
+    console.log(curOffer)
+    setListOffer(curOffer)
   }
   
   useEffect(() => {
@@ -146,37 +87,148 @@ const LendingPage = () => {
   }, [])
 
   useEffect(() => {
-    setOffer({...offer, repayment: getRepayment(offer)})
-    console.log('vcl')
+    setOffer({...offer, repayment: Number(countRepayment(offer.principal, offer.apr, offer.duration, offer.durationType))})
   }, [offer.apr, offer.principal, offer.duration, offer.durationType])
 
 
   const {appState, userState} = useAppSelector(state => state)
+
+
   const acceptLoan = async () => {
     if (!userState.isAuthenticated) {
       alert("Connect wallet before faucet token");
       return;
     }
+
     setLoading(true)
-
-    const LendContract = getLendingContract(appState.web3, LendingCT)
-    const ERC20Contract = getERC20Contract(appState.web3, dataLoan.principalAddress)
-
+    const LendContract = getLendingContract(appState.web3)
+    const ERC20Contract = getERC20Contract(appState.web3, dataLoan.defaultOffer.principalAddress)
     try {
-      const approveReceipt = await ERC20Contract.methods.approve(LendingCT, BigInt(dataLoan.principal * 1000000000000000000)).send({from: userState.address})
+      const approveReceipt = await ERC20Contract.methods
+        .approve(LendingCT_Address, BigInt(dataLoan.defaultOffer.principal * 1000000000000000000))
+        .send({from: userState.address})
 
-      const acceptTermMethod = LendContract.methods.acceptTerm(dataLoan.loanID)
-      const acceptTermReceipt = await acceptTermMethod.send({from: userState.address})
-      console.log(acceptTermReceipt)
-      await appApi.acceptLoan({ 
-        id: dataLoan.loanID,
-      })
+      const startLendRecipt = await LendContract.methods
+        .startLending(dataLoan.loanID)
+        .send({from: userState.address})
+
+      await appApi.startLend(dataLoan.loanID)
       setOpenModal(true)
+      
     } catch (error) {
       console.log(error)        
     }
     setLoading(false)
   }
+
+  const offerLoan = async () => {
+    if (!userState.isAuthenticated) {
+      alert("Connect wallet to continue");
+      return;
+    }
+
+    if (offer.principal == 0 || offer.apr == 0 || offer.duration == 0 || offer.durationType == '') {
+      alert("Please fill all fields");
+      return;
+    }
+    const LendContract = getLendingContract(appState.web3)
+    const ERC20Contract = getERC20Contract(appState.web3, String(offer.principalAddress))
+    const offerID = appState.web3.utils.keccak256(uuidv4())
+    try {
+      await ERC20Contract.methods
+        .approve(LendingCT_Address, BigInt(Number(offer.principal)* 1000000000000000000))
+        .send({from: userState.address})
+
+      await LendContract.methods
+        .offerLoanTerm(
+          dataLoan.loanID,
+          offerID,
+          BigInt(offer.principal* 1000000000000000000),
+          offer.apr,
+          (offer.durationType === 'day' ? offer.duration : (offer.durationType === 'week' ? Number(offer.duration) * 7 : Number(offer.duration) * 30)),
+          offer.principalAddress
+        ).send({from: userState.address})
+    
+      await appApi.makeOffer({
+        loanID: dataLoan._id,
+        offerID: offerID,
+        principal: offer.principal,
+        principalType: String(offer.principalType),
+        principalAddress: String(offer.principalAddress),
+        apr: offer.apr,
+        duration: offer.duration,
+        durationType: offer.durationType,
+        repayment: Number(offer.repayment)
+      })
+      setOpenModal(true)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const acceptOffer = async (tags : any) => {
+    if (!userState.isAuthenticated) {
+      alert("Connect wallet to continue");
+      return;
+    }
+    const LendContract = getLendingContract(appState.web3)
+    try {
+      await LendContract.methods
+        .startBorrowing(dataLoan.loanID, tags.offerID)
+        .send({from: userState.address})
+
+      await appApi.startBorrow({loanID: dataLoan._id, offerID: tags.offer_id})
+      setOpenModal(true)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+  const columns: ColumnsType<DataType> = [
+    {
+      title: 'Principal',
+      dataIndex: 'principal',
+      key: 'principal',
+      render: (text) => <a>{text}</a>,
+      sorter: (a, b) => Number(a.principal) - Number(b.principal),
+    },
+    {
+      title: 'APR',
+      dataIndex: 'apr',
+      key: 'apr',
+      render: (number) => <p>{number}%</p>,
+      sorter: (a, b) => a.apr - b.apr,
+    },
+    {
+      title: 'Term',
+      dataIndex: 'term',
+      key: 'term',
+      sorter: (a, b) => a.term.length - b.term.length,
+    },
+    {
+      title: 'Lender',
+      key: 'Lender',
+      dataIndex: 'tags',
+      render: (text) => <a>{text}</a>
+    },
+    {
+      title: 'Action',
+      key: 'tags',
+      render: (tags) => (
+        <Space size="middle">
+          {
+            userState.address == dataLoan.borrower.address &&
+            <a onClick={() => acceptOffer(tags)}>Accept</a>
+          }
+          {
+            userState.address == tags.tags[0] &&
+            <a>Delete</a>
+          }
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <div className='app-lendingpage'>
@@ -185,9 +237,9 @@ const LendingPage = () => {
               <div className='info-lend--header'>
                 <p>Loan detail</p>
 
-                <div className='id-due'>
-                  <p>ID: {dataLoan._id || ''}</p>
-                  <p>Due: 14 Aug 23 / 11:47 AM</p>
+                <div className='id-due' style={{marginBottom: -20}}>
+                  <p>ID: <span>#{dataLoan._id || ''}</span></p>
+                  <p>Borrower: <span>{dataLoan.borrower ? shortenString(dataLoan.borrower.address, 10, 8) : ''}</span></p>
                 </div>
               </div>
 
@@ -196,15 +248,15 @@ const LendingPage = () => {
                   <img 
                     alt="NFT" 
                     width={200}
-                    height={200}
-                    style={{borderRadius: 10}}
-                    src={dataLoan.nft ? dataLoan.nft.image : ""} 
+                    height={220}
+                    style={{borderRadius: 10, objectFit: 'cover'}}
+                    src={dataLoan.asset ? dataLoan.asset.image : ""} 
                   />  
                   <div className='info-nft--list-props'>
-                    <p className='info-nft--name'>Starbuck NFT</p>
+                    <p className='info-nft--name'>{dataLoan.asset && dataLoan.asset.tokenName}</p>
                     <div>
-                      <p className='info-nft--prop'>Token ID: <span>{dataLoan.nft ? dataLoan.nft.tokenID : '' }</span></p>
-                      <p className='info-nft--prop'>Contract address:  <span>{shortenString(NFTBaseCT,6,8)}</span> </p>
+                      <p className='info-nft--prop'>Token ID: <span>#0000{dataLoan.asset ? dataLoan.asset.tokenID : '' }</span></p>
+                      <p className='info-nft--prop'>Contract address:  <span>{shortenString(ERC721CT_Address,6,8)}</span> </p>
                       <p className='info-nft--prop'>Token Standard: <span>  ERC-721 </span> </p>
                       <p className='info-nft--prop'>Last updated:  <span> 1 month ago </span> </p>
                     </div>
@@ -214,21 +266,22 @@ const LendingPage = () => {
                   <div style={{marginRight: 10}}>
                     <div className='info-lend-item'>
                       <span>Principal </span> 
-                      {dataLoan.principal || ''} {dataLoan.principalType || ''}
+                          
+                        {dataLoan.defaultOffer && dataLoan.defaultOffer.principal || ''} {dataLoan.defaultOffer && dataLoan.defaultOffer.principalType || ''}
                     </div>
                     <div className='info-lend-item'>
                       <p>APR</p>
-                      <p> {dataLoan.apr}%</p> 
+                      <p> { dataLoan.defaultOffer && dataLoan.defaultOffer.apr}%</p> 
                     </div>
                   </div>
                   <div>
                     <div className='info-lend-item'>
                       <p>Term</p>
-                      <p>10 days</p>
+                      <p>{ dataLoan.defaultOffer && dataLoan.defaultOffer.duration} { dataLoan.defaultOffer && dataLoan.defaultOffer.durationType}</p>
                     </div>
                     <div className='info-lend-item'>
                       <p>Repayment</p> 
-                      <p>{Number(dataLoan.repayment).toFixed(2)  || ''} {dataLoan.principalType || ''}</p>
+                      <p>{Number( dataLoan.defaultOffer && dataLoan.defaultOffer.repayment).toFixed(2)  || ''} { dataLoan.defaultOffer && dataLoan.defaultOffer.principalType || ''}</p>
                     </div>
                   </div>
                 </div>
@@ -243,7 +296,7 @@ const LendingPage = () => {
             <div className='offer--table'>
               <Table
                 columns={columns} 
-                dataSource={data} 
+                dataSource={listOffer} 
                 bordered={false}
                 pagination={false}
               />
@@ -259,16 +312,18 @@ const LendingPage = () => {
               <div className='action--content'>
                 <InputNumber
                   size='large'
+                  controls={false}
                   className='ation-input-number'
                   addonBefore={<p className='action--content-addon'>Principal</p>}
                   addonAfter={(
-                    <Select style={{width: 100, color: 'white', fontWeight: 600}} value={offer.durationType} onChange={(value : string) => setOffer({...offer, durationType: value})}>
-                      <Select.Option value="usdc">USDT</Select.Option>
-                      <Select.Option value="usdc">USDC</Select.Option>
-                      <Select.Option value="klay">KLAY</Select.Option>
+                    <Select style={{width: 100, color: 'white', fontWeight: 600}} value={offer.principalType} 
+                      onChange={(value : string) => setOffer({...offer, principalType: value, principalAddress: getAddressOfStableCoin(value)})}>
+                      <Select.Option value="USDT">USDT</Select.Option>
+                      <Select.Option value="USDC">USDC</Select.Option>
+                      <Select.Option value="KLAY">KLAY</Select.Option>  
                     </Select>
                   )}
-                  onChange={(value : (number | null)) => setOffer({...offer, principal: value})}
+                  onChange={(value : (number | null)) => setOffer({...offer, principal: Number(value)})}
                 />
                 <InputNumber
                   addonBefore={<p className='action--content-addon'>Apr</p>}
@@ -276,7 +331,7 @@ const LendingPage = () => {
                   size='large'
                   className='ation-input-number'
                   controls={false}
-                  onChange={(value : (number | null)) => setOffer({...offer, apr: value})}
+                  onChange={(value : (number | null)) => setOffer({...offer, apr: Number(value)})}
                 />
                 <InputNumber
                   addonBefore={<p className='action--content-addon'>Duration</p>}
@@ -287,14 +342,14 @@ const LendingPage = () => {
                       <Select.Option value="month">months</Select.Option>
                     </Select>
                   )}
-                  onChange={(value : (number | null)) => setOffer({...offer, duration: value})}
+                  onChange={(value : (number | null)) => setOffer({...offer, duration: Number(value)})}
                   controls={false}
                   size='large'
                   className='ation-input-number'
                 />
               </div>
               <p className='repayment'>Repayment: {offer.repayment} {offer.principalType} </p>
-              <div className="button-create" onClick={() => console.log(offer)}>Create offer</div>
+              <div className="button-create" onClick={offerLoan}>Make offer</div>
             </div>
 
             <div className='user-info'>

@@ -32,6 +32,11 @@
                         font-size: 1rem;
                         font-weight: 500;
                         color: #ccc;
+
+                        span {
+                            color : #fff;
+                            font-weight: 400;
+                        }
                     }
                 }
             }
@@ -284,11 +289,39 @@
     width: 220px;
     height: 60px;
     margin-top: auto;
-    margin-bottom: auto;
     margin-left: 30px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 4px;
+    margin: auto 20px 0 20px;
+}
+
+.ant-modal-content {
+    background-color: rgb(41, 46, 65) !important;
+}
+
+.ant-modal-title {
+    color: #ddd !important;
+    background-color: rgb(41, 46, 65) !important;
+}
+
+.ant-modal-body {
+    p {
+        color: #ccc !important;
+    }
+}
+
+
+.ant-modal-mask {
+    background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+.ant-result-title {
+    color: #ccc !important;
+}
+.ant-result-subtitle {
+    color: #ccc !important;
+
 }

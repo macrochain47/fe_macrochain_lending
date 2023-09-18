@@ -12,7 +12,7 @@
         justify-content: space-between;
     }
 
-    .app-borrow-nfts{
+    .app-borrow-assets{
         display: grid;
         justify-content: space-between;
         grid-template-columns: repeat(auto-fill, calc(100% / 5 - 20px)); /* 2 */
@@ -117,80 +117,85 @@
                     font-weight: 700;
                 }
             }
-        }  
-        .collateral {
-            display: flex;
-            flex-direction: row;
-            column-gap: 12px;
-            margin: 10px 0px 50px 0px;
-            position: relative;
-            img {
-                width: 110px;
-                height: 110px;
-                border-radius: 5px;
-            }
-            .nft-name {
-                font-size: 1.3rem;
-                font-weight: 600;     
-            }
-            .btn-info {
-                position: absolute;
-                right: -10px;
-                top: -10px;
-                cursor: pointer;
-                padding: 10px;
-                &--icon {
-                    font-size: 1.5rem;
-                    &:hover {
-                        color: black;
+            .collateral {
+                display: flex;
+                flex-direction: row;
+                column-gap: 12px;
+                margin: 10px 0px 50px 0px;
+                position: relative;
+                img {
+                    width: 110px;
+                    height: 110px;
+                    border-radius: 5px;
+                    object-fit: cover;
+                }
+
+                .collateral-props{
+                    .asset-name {
+                        font-size: 1.3rem;
+                        font-weight: 600;     
+                    }
+                    .btn-info {
+                        position: absolute;
+                        right: -10px;
+                        top: -10px;
+                        cursor: pointer;
+                        padding: 10px;
+                        &--icon {
+                            font-size: 1.5rem;
+                            &:hover {
+                                color: black;
+                            }
+                        }
+                    }
+                    .info-asset--prop {
+                        span {
+                            font-weight: 600;
+                        }
+                    }
+                    .info-asset--evaluation {
+                        position: absolute;
+                        bottom: 0;
+                        padding: 5px 10px;
+                        border-radius: 5px;
+                        font-weight: 600;
+                        background-color: rgba(235, 235, 239, 0.3);
                     }
                 }
             }
-            .info-nft--prop {
-                span {
-                    font-weight: 600;
-                }
-            }
-            .info-nft--evaluation {
-                position: absolute;
-                bottom: 0;
-                padding: 5px 10px;
-                border-radius: 5px;
-                font-weight: 600;
-                background-color: rgba(235, 235, 239, 0.3);
-            }
-        }
+        }  
+        
     
     }
 }
 
 @media screen and (max-width: 2240px) {
-    .app-borrow .app-borrow-nfts{
+    .app-borrow .app-borrow-assets{
         grid-template-columns: repeat(auto-fill, calc(100% / 5 - 20px)); /* 2 */
     }
 }
 @media screen and (max-width: 1920px) {
-    .app-borrow .app-borrow-nfts{
+    .app-borrow .app-borrow-assets{
         grid-template-columns: repeat(auto-fill, calc(100% / 4 - 20px)); /* 2 */
     }
 }
 @media screen and (max-width: 1680px) {
-    .app-borrow .app-borrow-nfts{
+    .app-borrow .app-borrow-assets{
         grid-template-columns: repeat(auto-fill, calc(100% / 3 - 20px)); /* 2 */
     }
 }
 @media screen and (max-width: 1260px) {
-    .app-borrow .app-borrow-nfts{
+    .app-borrow .app-borrow-assets{
         grid-template-columns: repeat(auto-fill, calc(100% / 2 - 20px)); /* 2 */
     }
 }
 @media screen and (max-width: 768px) {
-    .app-borrow .app-borrow-nfts{
+    .app-borrow .app-borrow-assets{
         grid-template-columns: repeat(auto-fill, calc(100% / 1 - 20px)); /* 2 */
     }
 }
 @media screen and (max-width: 480px) {
-    .app-borrow .app-borrow-nfts{
+    .app-borrow .app-borrow-assets{
         grid-template-columns: repeat(auto-fill, calc(100% / 1 - 20px)); /* 2 */
     }
 }

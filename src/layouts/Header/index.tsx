@@ -63,7 +63,7 @@ export const hdConnectWallet = async () => {
 
           toast.update(toastify, { render: "Connect wallet successfully!", type: "success", isLoading: false, autoClose: 1000});
       } catch (error) {
-          // toast.update(toastify, { render: "Connect wallet failed, see detail in console.", type: "error", isLoading: false, autoClose: 1000});
+          toast.update(toastify, { render: "Connect wallet failed, see detail in console.", type: "error", isLoading: false, autoClose: 1000});
           console.log(error)
       }
   } else {

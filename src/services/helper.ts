@@ -1,3 +1,5 @@
+import { USDC_CT_Address, USDT_CT_Address } from "@/constants/addressContract";
+
 export const shortenString = (str: string, headCount: number, tailCount: number): string => {
     if (str.length <= headCount + tailCount) {
         return str;
@@ -18,4 +20,10 @@ export const countRepayment = (principal: number, apr: number, duration: number,
     if (durationType === 'day') return Number(Number(principal + principal*duration/365 * apr / 100).toFixed(2));
     if (durationType === 'week') return Number(Number(principal + principal*7*duration/365 * apr / 100).toFixed(2));
     else return Number(Number(principal + principal*30*duration/365*apr/100).toFixed(2));
+}
+
+export const getAddressOfStableCoin = (type: string): string => {
+    console.log(type)
+    if (type === "USDT") return USDT_CT_Address
+    else return USDC_CT_Address
 }

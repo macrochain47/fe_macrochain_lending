@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 import React, { useEffect, useState } from 'react'
-import { getLendingContract, getNFTBaseContract } from '@/services/blockchain'
+import { getLendingContract, getERC721Contract } from '@/services/blockchain'
 import { Button, InputNumber, Modal, Result, Select, Spin } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons'
 
@@ -9,9 +9,12 @@ import './Borrow.scss'
 import { countRepayment } from '@/services/helper'
 import NFTAsset from '@/components/borrow'
 import { useAppSelector } from '@/state/hook'
-import { LendingCT, NFTBaseCT, USDC_CT, USDT_CT } from '@/constants/addressContract'
 import appApi from '@/api/appAPI'
 import { useRouter } from 'next/navigation'
+import ModalLogin from '@/components/ModalLogin/ModalLogin'
+import { v4 as uuidv4 } from 'uuid'
+import { ERC721CT_Address, LendingCT_Address, USDC_CT_Address, USDT_CT_Address} from '@/constants/addressContract'
+ 
 
 interface ITermProps {
   principal: number | null;
@@ -26,13 +29,13 @@ interface ITermProps {
 
 const Borrow = () => {
   const { userState, appState } = useAppSelector(state => state)
-  const [myNFTs, setMyNFTs] = useState([])
-  const [nft, setNft] = useState<any>(null)
+  const [myAssets, setMyAssets] = useState([])
+  const [asset, setAsset] = useState<any>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [term, setTerm] = useState<ITermProps>({
     principal: 0,
     principalType: 'USDT',
-    principalAddress: USDT_CT,
+    principalAddress: USDT_CT_Address,
     apr: 0,
     duration: 0,
     durationType: 'day',
@@ -43,17 +46,17 @@ const Borrow = () => {
   const router = useRouter()
   useEffect(() => {
     const func = async () => {
-      const data = await appApi.getMyNFT()
+      const data = await appApi.getMyAssets()
 
-      const myNFTs = data.data.filter((nft : any) => nft.status === 'default')
-      console.log(myNFTs)
-      myNFTs.reverse()
-      console.log(myNFTs)
+      const myAssets = data.data.filter((asset : any) => asset.status === 'default')
+      console.log(myAssets)
+      myAssets.reverse()
+      console.log(myAssets)
 
-      setMyNFTs(myNFTs)
+      setMyAssets(myAssets)
     }
-    func()
-  }, [])
+    userState.isAuthenticated && func()
+  }, [userState.address])
 
   useEffect(() => {
     if (term.principal && term.apr && term.duration){
@@ -62,7 +65,7 @@ const Borrow = () => {
   }, [term.principal, term.principalType, term.apr, term.duration, term.durationType])
   
   const handleClickSelectNFT = (data : any) => {
-    setNft(data)
+    setAsset(data)
   }
 
   const clickLendNFT = async () => {
@@ -71,57 +74,54 @@ const Borrow = () => {
       return;
     }
     setLoading(true)
-    const loanID = Math.floor(Math.random() * 1000000000)
-    const LendingContract = getLendingContract(appState.web3, LendingCT) 
-    const NFTBaseContract = getNFTBaseContract(appState.web3, NFTBaseCT)
+
+    const loanID =  appState.web3.utils.keccak256(uuidv4())
+
+    const TangilendCT = getLendingContract(appState.web3)
+    const ERC721CT = getERC721Contract(appState.web3)
     
     try {
-      const approveMethod = NFTBaseContract.methods.approve(LendingCT, nft.tokenID)
-    
-      await approveMethod.send({from: userState.address})
-  
-      const createLoanMethod = LendingContract.methods.listLoan(
-        NFTBaseCT,
+      await ERC721CT.methods.approve(LendingCT_Address, asset.tokenID).send({from: userState.address})
+
+      const createLoanRecipt = await TangilendCT.methods.createLoan(
         loanID,
-        (term.durationType === 'day' ? term.duration : (term.durationType === 'week' ? Number(term.duration) * 7 : Number(term.duration) * 30)),
-        nft.tokenID,
-        term.principalAddress,
+        ERC721CT_Address,
+        asset.tokenID,
         BigInt(Number(term.principal) * 1000000000000000000),
         term.apr,
-      )
-  
-      await createLoanMethod.send({from: userState.address})
-  
-      await appApi.createLoan({
-        nftID: nft._id,
+        (term.durationType === 'day' ? term.duration : (term.durationType === 'week' ? Number(term.duration) * 7 : Number(term.duration) * 30)),
+        term.principalAddress
+      ).send({from: userState.address})
+
+      await appApi.createNewLoan({
+        collateralID: asset._id,
         loanID: loanID,
-        valuation: nft.valuation,
-        principal: term.principal,
+        principal: Number(term.principal),
         principalType: term.principalType,
         principalAddress: term.principalAddress,
-        apr: term.apr,
+        apr: Number(term.apr),
         duration: term.duration,
         durationType: term.durationType,
-        repayment: term.repayment
+        repayment: Number(term.repayment)
       })
       setOpenModal(true)
     } catch (error) {
       console.log(error)
     }
     setLoading(false)
-
   }
 
   return (
     <div className='app-borrow'>
-      <header className='header'>Collateral & Asset</header>
+      {userState.isAuthenticated ? null : <ModalLogin />}
 
+      <header className='header'>Collateral & Asset</header>
       <div className='content'>
-        <div className='app-borrow-nfts'>
+        <div className='app-borrow-assets'>
           {
-            myNFTs.map((nft, index) => (
-              <div onClick={() => handleClickSelectNFT(nft)}>
-                <NFTAsset data={nft} />
+            myAssets.map((asset, index) => (
+              <div onClick={() => handleClickSelectNFT(asset)}>
+                <NFTAsset data={asset} />
               </div>
             ))
           }
@@ -134,25 +134,20 @@ const Borrow = () => {
                 <p>Collateral</p>
               </div>
               {
-                nft != null &&
+                asset != null &&
                 <>  
                   <div className='collateral'>
-                    <img src={nft.image} 
-                      alt="azuki" 
+                    <img src={asset.image} 
+                      alt="asset image" 
                       width={100} 
                       height={100}
-                      className='img-collateral'
                     />
-
-                    <div>
-                      <p className='nft-name'>{nft.tokenName}</p>
-                      <p className='info-nft--prop'>Token ID: <span>#000{nft.tokenID}</span></p>
-                      <p className='info-nft--prop'>Contract address:  <span> 0x5af0...25a5  </span> </p>
-
-                      <p className='info-nft--evaluation'>${nft.valuation} USD</p>
+                    <div className='collateral-props'>
+                      <p className='asset-name'>{asset.tokenName}</p>
+                      <p className='info-asset--prop'>Token ID: <span>#000{asset.tokenID}</span></p>
+                      <p className='info-asset--prop'>Contract address:  <span> 0x5af0...25a5  </span> </p>
+                      <p className='info-asset--evaluation'>${asset.valuation} USD</p>
                     </div>
-
-
                     <div className='btn-info'>
                       <InfoCircleOutlined className='btn-info--icon'/>
                     </div>
@@ -168,7 +163,8 @@ const Borrow = () => {
                   className='ation-input-number'
                   addonBefore={<p className='action--content-addon'>Principal</p>}
                   addonAfter={(
-                    <Select style={{width: 100, color: 'white', fontWeight: 600}} value={term.principalType} onChange={(value : string) => setTerm({...term, principalType: value, principalAddress: value === "USDT" ? USDT_CT : ( value === "USDC" ? USDC_CT : '')})}>
+                    <Select style={{width: 100, color: 'white', fontWeight: 600}} value={term.principalType} 
+                    onChange={(value : string) => setTerm({...term, principalType: value, principalAddress: value === "USDT" ? USDT_CT_Address : ( value === "USDC" ? USDC_CT_Address : '')})}>
                       <Select.Option value="USDT">USDT</Select.Option>
                       <Select.Option value="USDC">USDC</Select.Option>
                       <Select.Option value="KLAY">KLAY</Select.Option>

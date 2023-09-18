@@ -9,7 +9,8 @@ import { Divider, Progress } from 'antd'
 import appApi from '@/api/appAPI'
 import { getERC20Contract } from '@/services/blockchain'
 import { useAppSelector } from '@/state/hook'
-import { USDC_CT, USDT_CT } from '@/constants/addressContract'
+import ModalLogin from '@/components/ModalLogin/ModalLogin'
+import { USDC_CT_Address, USDT_CT_Address } from '@/constants/addressContract'
 
 const MyInfo = () => {
   const percent = 70
@@ -24,11 +25,11 @@ const MyInfo = () => {
   console.log(userState)
   useEffect(() => {
     const func = async () => {
-      const myNFTs = await appApi.getMyNFT()
+      const myNFTs = await appApi.getMyAssets()
       setMyNFTs(myNFTs.data)
 
-      const USDTContract = getERC20Contract(appState.web3, USDT_CT)
-      const USDCContract = getERC20Contract(appState.web3, USDC_CT)
+      const USDTContract = getERC20Contract(appState.web3, USDT_CT_Address)
+      const USDCContract = getERC20Contract(appState.web3, USDC_CT_Address)
 
       const usdtBalance = await USDTContract.methods.balanceOf(userState.address).call()
       const usdcBalance = await USDCContract.methods.balanceOf(userState.address).call()
@@ -50,6 +51,7 @@ const MyInfo = () => {
 
   return (
     <div className='app-myinfo'>
+      {userState.isAuthenticated ? null : <ModalLogin />}
       <div className='app-myinfo--left'>
         <div className='app-myinfo--left--asset'>
           <div className='asset-item'>

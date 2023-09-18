@@ -8,7 +8,7 @@ const Lends = () => {
   const [loans, setLoans] = React.useState<any[]>([])
 
   const fetchLoan = async() => {
-    const data = await appApi.getAllLoan()
+    const data = await appApi.getAllLoans()
     const listLoan = data.data;
     listLoan.reverse()
     setLoans(listLoan)

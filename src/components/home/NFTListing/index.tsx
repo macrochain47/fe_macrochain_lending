@@ -13,34 +13,34 @@ const LoanListing = ({data} : {data:any}) => {
         <Link href={`lend/${data._id}`} className='nft'>
             <div className='nft-header'>
                 <p className='nft-id'>
-                    #0000{data.nft.tokenID}
+                    #0000{data.asset.tokenID}
                 </p>
                 <p className='nft-name'>
-                    {data.nft.tokenName}
+                    {data.asset.tokenName}
                 </p>
             </div>
             
             <img 
                 alt="NFT" 
                 className='nft-image'
-                src={data.nft.image}
+                src={data.asset.image}
                 style={{width: '100%',  objectFit: 'cover', marginBottom: 10}}
             />
 
             <div className='nft--loans-info'>
                 <div className='loan-apr'>
                     <p className='nft-info-title'>APR </p>
-                    <p className='loan-info-content'>{data.apr}%</p> 
+                    <p className='loan-info-content'>{data.defaultOffer.apr}%</p> 
                 </div>
                 <div className='loan-term'>
                     <p className='nft-info-title'>Duration</p>
-                    <p className='loan-info-content'>{data.duration} {data.durationType}{data.duration > 1 ? 's' : ""}</p>
+                    <p className='loan-info-content'>{data.defaultOffer.duration} {data.defaultOffer.durationType}{data.duration > 1 ? 's' : ""}</p>
                 </div>
                 <div className='loan-term'>
                     <p className='nft-info-title'>Principal</p>
                     <div style={{display: 'flex', alignItems:'center'}} className='loan-info-content'>
-                        {data.principal} 
-                        <img src={tokens[data.principalType === 'USDT' ? 0 : 1].image} alt='token' style={{
+                        {data.defaultOffer.principal} 
+                        <img src={tokens[data.defaultOffer.principalType === 'USDT' ? 0 : 1].image} alt='token' style={{
                             width: 20, marginLeft: 6
                         }}/>
                     </div>
